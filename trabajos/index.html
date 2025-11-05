@@ -1,16 +1,130 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <title>Mi Porfolio de PDFs</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mi Portafolio</title>
+    <style>
+        /* Estilos generales para un diseño bonito y moderno */
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f0f4f8;
+            color: #333;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        header {
+            background-color: #4a90e2;
+            color: white;
+            width: 100%;
+            padding: 40px 0;
+            text-align: center;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        header h1 {
+            margin: 0;
+            font-size: 2.5em;
+        }
+
+        .container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            padding: 40px 20px;
+            max-width: 1200px;
+            width: 100%;
+        }
+
+        .window {
+            background-color: white;
+            border-radius: 12px;
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+            padding: 20px;
+            text-align: center;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .window:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        .window h2 {
+            font-size: 1.5em;
+            margin-bottom: 15px;
+            color: #4a90e2;
+        }
+
+        .window a {
+            display: inline-block;
+            background-color: #4a90e2;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 6px;
+            text-decoration: none;
+            font-weight: bold;
+            transition: background-color 0.3s ease;
+        }
+
+        .window a:hover {
+            background-color: #357abd;
+        }
+
+        footer {
+            background-color: #4a90e2;
+            color: white;
+            width: 100%;
+            padding: 20px 0;
+            text-align: center;
+            margin-top: auto;
+        }
+    </style>
 </head>
 <body>
-  <h1>Mi Porfolio de PDFs</h1>
-  <ul>
-    <li><a href="prueba1/prueba1.pdf" target="_blank">Descargar PDF 1</a></li>
-    <li><a href="pdfs/archivo2.pdf" target="_blank">Descargar PDF 2</a></li>
-    <li><a href="pdfs/archivo3.pdf" target="_blank">Descargar PDF 3</a></li>
-    <!-- Agrega más elementos según tus archivos -->
-  </ul>
+    <header>
+        <h1>Mi Portafolio</h1>
+    </header>
+
+    <div class="container">
+        <!-- Ventana 1: Reemplaza el href con tu enlace -->
+        <div class="window">
+            <h2>Proyecto 1</h2>
+            <p>Descripción breve del proyecto o sección.</p>
+            <a href="#" target=_blank>Acceder al Enlace</a>
+        </div>
+
+        <!-- Ventana 2: Reemplaza el href con tu enlace -->
+        <div class="window">
+            <h2>Proyecto 2</h2>
+            <p>Descripción breve del proyecto o sección.</p>
+            <a href="#" target=_blan>Acceder al Enlace</a>
+        </div>
+
+        <!-- Ventana 3: Reemplaza el href con tu enlace -->
+        <div class="window">
+            <h2>Proyecto 3</h2>
+            <p>Descripción breve del proyecto o sección.</p>
+            <a href="#" target=_blan>Acceder al Enlace</a>
+        </div>
+
+        <!-- Ventana 4: Reemplaza el href con tu enlace -->
+        <div class="window">
+            <h2>Contacto</h2>
+            <p>Descripción breve del proyecto o sección.</p>
+            <a href="#" target=_blan>Acceder al Enlace</a>
+        </div>
+
+        <!-- Puedes agregar más ventanas copiando esta estructura -->
+    </div>
+
+    <footer>
+        <p>&copy; 2025 Tu Nombre. Todos los derechos reservados.</p>
+    </footer>
 </body>
 </html>
