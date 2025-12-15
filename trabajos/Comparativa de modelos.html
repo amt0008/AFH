@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Benchmark IA: Rectángulos en Leyenda</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <style>
+        body {
+            background-color: #f4f4f9;
+            margin: 0;
+            padding: 0;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-family: 'Segoe UI', sans-serif;
+        }
+
+        .chart-container {
+            position: relative;
+            width: 90%;
+            max-width: 1200px;
+            background: white;
+            padding: 25px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.1); 
+            border-radius: 20px;
+            height: 65vh;
+            min-height: 500px;
+        }
+
+        canvas {
+            width: 100% !important;
+            height: 100% !important;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="chart-container">
+        <canvas id="miGrafica"></canvas>
+    </div>
+
+    <script>
+        // 1. DATOS REALES
+        const rawData = {
+            labels: [
+                'Qwen 3 VL 4B', 
+                'Granite 4.0 Tiny', 
+                'GPT-OSS 20B', 
+                'Qwen 3 Thinking',
+                'Qwen v1 4B'
+            ],
+            ptk: [904, 283, 557, 607, 2054],      
+            calidad: [9, 5, 4, 8, 7],             
+            segundos: [23.1, 5.3, 15.8, 9.0, 20.7] 
+        };
+
+        // 2. LÍMITES VISUALES
+        const MAX_TOKENS = 2200; 
+        const MAX_SEGUNDOS = 30; 
+        const MAX_CALIDAD = 10;
+
+        // ESTILOS DE COLOR
+        const styleTiempo = { color: 'rgba(54, 162, 235, 1)', label: 'Duración (s)' }; // AZUL
+        const styleTokens = { color: 'rgba(255, 99, 132, 1)', label: 'Tokens' };       // ROJO
+        const styleCalidad = { color: 'rgba(46, 204, 113, 1)', label: 'Calidad' };     // VERDE
+
+        const estadoVisibilidad = { tiempo: true, tokens: true, calidad: true };
+
+        // --- MOTOR DE CÁLCULO DE CAPAS ---
+        function calcularCapas() {
+            const layers = {
+                back: { data: [], bg: [], border: [], meta: [] },
+                mid:  { data: [], bg: [], border: [], meta: [] },
+                front:{ data: [], bg: [], border: [], meta: [] }
+            };
+
+            for (let i = 0; i < rawData.labels.length; i++) {
+                const rawTime = estadoVisibilidad.tiempo ? rawData.segundos[i] : 0;
+                const rawTok = estadoVisibilidad.tokens ? rawData.ptk[i] : 0;
+                const rawCal = estadoVisibilidad.calidad ? rawData.calidad[i] : 0;
+
+                const normTime = (rawTime / MAX_SEGUNDOS) * 100;
+                const normTok = (rawTok / MAX_TOKENS) * 100;
+                const normCal = (rawCal / MAX_CALIDAD) * 100;
+
+                const items = [
+                    { norm: normTime, raw: rawTime, style: styleTiempo, type: 'tiempo' },
+                    { norm: normTok, raw: rawTok, style: styleTokens, type: 'tokens' },
+                    { norm: normCal, raw: rawCal, style: styleCalidad, type: 'calidad' }
+                ];
+
+                items.sort((a, b) => b.norm - a.norm);
+
+                layers.back.data.push(items[0].norm);
+                layers.back.bg.push(items[0].style.color);
+                layers.back.border.push(items[0].style.color);
+                layers.back.meta.push(items[0]);
+
+                layers.mid.data.push(items[1].norm);
+                layers.mid.bg.push(items[1].style.color);
+                layers.mid.border.push(items[1].style.color);
+                layers.mid.meta.push(items[1]);
+
+                layers.front.data.push(items[2].norm);
+                layers.front.bg.push(items[2].style.color);
+                layers.front.border.push(items[2].style.color);
+                layers.front.meta.push(items[2]);
+            }
+            return layers;
+        }
+
+        let datosProcesados = calcularCapas();
+        const ctx = document.getElementById('miGrafica').getContext('2d');
+
+        const miGrafica = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: rawData.labels,
+                datasets: [
+                    {
+                        data: datosProcesados.back.data,
+                        backgroundColor: datosProcesados.back.bg,
+                        borderColor: datosProcesados.back.border,
+                        borderWidth: 1, borderRadius: 6, grouped: false, order: 3,
+                        barPercentage: 0.85, categoryPercentage: 0.85, yAxisID: 'y_base'
+                    },
+                    {
+                        data: datosProcesados.mid.data,
+                        backgroundColor: datosProcesados.mid.bg,
+                        borderColor: datosProcesados.mid.border,
+                        borderWidth: 1, borderRadius: 6, grouped: false, order: 2,
+                        barPercentage: 0.85, categoryPercentage: 0.85, yAxisID: 'y_base'
+                    },
+                    {
+                        data: datosProcesados.front.data,
+                        backgroundColor: datosProcesados.front.bg,
+                        borderColor: datosProcesados.front.border,
+                        borderWidth: 1, borderRadius: 6, grouped: false, order: 1,
+                        barPercentage: 0.85, categoryPercentage: 0.85, yAxisID: 'y_base'
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                animation: { duration: 1500, easing: 'easeOutQuart' },
+                plugins: {
+                    title: { 
+                        display: true, 
+                        text: 'Benchmark IA: Tokens vs Tiempo vs Calidad', 
+                        font: { size: 22, weight: 'bold' }, padding: { bottom: 20 }, color: '#333'
+                    },
+                    legend: {
+                        position: 'bottom',
+                        labels: {
+                            padding: 20, 
+                            font: { size: 14 },
+                            // CAMBIO AQUÍ: false para usar rectángulos (cajas)
+                            usePointStyle: false, 
+                            boxWidth: 40, // Ancho del rectángulo
+                            generateLabels: function(chart) {
+                                return [
+                                    { text: styleTokens.label, fillStyle: styleTokens.color, strokeStyle: styleTokens.color, hidden: !estadoVisibilidad.tokens },
+                                    { text: styleTiempo.label, fillStyle: styleTiempo.color, strokeStyle: styleTiempo.color, hidden: !estadoVisibilidad.tiempo },
+                                    { text: styleCalidad.label, fillStyle: styleCalidad.color, strokeStyle: styleCalidad.color, hidden: !estadoVisibilidad.calidad }
+                                ];
+                            }
+                        },
+                        onClick: function(e, legendItem) {
+                            if (legendItem.text === styleTokens.label) estadoVisibilidad.tokens = !estadoVisibilidad.tokens;
+                            if (legendItem.text === styleTiempo.label) estadoVisibilidad.tiempo = !estadoVisibilidad.tiempo;
+                            if (legendItem.text === styleCalidad.label) estadoVisibilidad.calidad = !estadoVisibilidad.calidad;
+                            datosProcesados = calcularCapas();
+                            miGrafica.data.datasets.forEach((ds, i) => {
+                                let layer = i === 0 ? datosProcesados.back : (i === 1 ? datosProcesados.mid : datosProcesados.front);
+                                ds.data = layer.data;
+                                ds.backgroundColor = layer.bg;
+                                ds.meta = layer.meta;
+                            });
+                            miGrafica.update();
+                        }
+                    },
+                    tooltip: {
+                        enabled: true, mode: 'index', intersect: false,
+                        backgroundColor: 'rgba(30, 30, 30, 0.9)', padding: 12,
+                        callbacks: {
+                            label: function(context) {
+                                let layer = context.datasetIndex === 0 ? datosProcesados.back : (context.datasetIndex === 1 ? datosProcesados.mid : datosProcesados.front);
+                                const meta = layer.meta[context.dataIndex];
+                                if (!meta || meta.raw === 0) return null;
+                                
+                                if (meta.type === 'calidad') return `★ Calidad: ${meta.raw}/10`;
+                                if (meta.type === 'tiempo') return `⏱ Tiempo: ${meta.raw}s`;
+                                return `📦 Tokens: ${meta.raw}`;
+                            }
+                        }
+                    }
+                },
+                scales: {
+                    x: { grid: { display: false }, stacked: true },
+                    y_base: { display: false, min: 0, max: 100 },
+
+                    y_left_tokens: {
+                        position: 'left', min: 0, max: 100,
+                        grid: { color: 'rgba(0,0,0,0.05)' },
+                        title: { display: true, text: 'Tokens Generados', color: styleTokens.color, font: {weight: 'bold'} },
+                        ticks: {
+                            color: styleTokens.color,
+                            callback: v => Math.round((v / 100) * MAX_TOKENS)
+                        }
+                    },
+
+                    y_right_time: {
+                        position: 'right', min: 0, max: 100,
+                        grid: { drawOnChartArea: false },
+                        title: { display: true, text: 'Duración (s)', color: styleTiempo.color, font: {weight: 'bold'} },
+                        ticks: {
+                            color: styleTiempo.color,
+                            callback: v => Math.round((v / 100) * MAX_SEGUNDOS) + ' s'
+                        }
+                    },
+
+                    y_right_quality: {
+                        position: 'right', min: 0, max: 100,
+                        grid: { drawOnChartArea: false },
+                        title: { display: true, text: 'Calidad', color: styleCalidad.color, font: {weight: 'bold'} },
+                        ticks: {
+                            color: styleCalidad.color,
+                            callback: v => (v / 100) * MAX_CALIDAD
+                        }
+                    }
+                }
+            }
+        });
+    </script>
+</body>
+</html>
