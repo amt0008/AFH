@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Comparativa de modelos IA: Cuantitativo y Cualitativo</title>
+    <title>Benchmark IA: Cuantitativo vs Cualitativo</title>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
     <style>
@@ -11,14 +11,15 @@
             background-color: #f4f4f9;
             margin: 0;
             padding: 20px;
-            /* Quitamos height: 100vh para permitir scroll si es necesario */
             display: flex;
             flex-direction: column;
             align-items: center;
             font-family: 'Segoe UI', sans-serif;
-            gap: 30px; /* Espacio entre las dos gráficas */
+            /* CAMBIO: Reducido de 30px a 10px para pegar los bloques */
+            gap: 10px; 
         }
 
+        /* Contenedor principal de gráficas */
         .chart-wrapper {
             position: relative;
             width: 90%;
@@ -27,14 +28,89 @@
             padding: 25px;
             box-shadow: 0 10px 25px rgba(0,0,0,0.08); 
             border-radius: 20px;
-            height: 45vh; /* Cada gráfica ocupa un poco menos de la mitad de la pantalla */
-            min-height: 350px;
+            height: 400px;
+            min-height: 400px;
         }
 
         canvas {
             width: 100% !important;
             height: 100% !important;
         }
+
+        /* Grid para las gráficas comparativas (abajo) */
+        .accuracy-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            width: 90%;
+            max-width: 1200px;
+            /* CAMBIO: Eliminado el margen inferior para pegar al siguiente título */
+            margin-bottom: 0px; 
+        }
+
+        /* Contenedor individual de las gráficas de abajo */
+        .chart-container {
+            background: white;
+            padding: 15px; 
+            border-radius: 20px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.08);
+            position: relative;
+            height: 350px;
+            min-height: 350px;
+        }
+
+        .chart-title {
+            text-align: center;
+            font-size: 1.3em;
+            color: #333;
+            margin-bottom: 2px; 
+            font-weight: 600;
+            height: 30px; 
+        }
+        
+        /* Subtítulo específico dentro de las tarjetas */
+        .chart-subtitle-detail {
+            text-align: center;
+            font-size: 0.75em;
+            color: #666;
+            margin-bottom: 5px; 
+            height: 15px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        /* Ajuste para el canvas dentro de chart-container */
+        .chart-container canvas {
+            height: calc(100% - 40px) !important; 
+        }
+
+        @media (max-width: 1200px) {
+            .accuracy-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        /* --- ESTILOS DE TÍTULOS DE SECCIÓN (AJUSTADOS) --- */
+        h2.section-title {
+            color: #1a1a1a;
+            /* CAMBIO: Reducido de 30px a 15px */
+            margin-top: 15px;    
+            margin-bottom: 0px;  
+            text-align: center;
+            font-size: 1.8rem;
+        }
+
+        p.section-subtitle {
+            text-align: center;
+            color: #666;
+            margin-top: 5px;    
+            /* CAMBIO: Reducido de 25px a 15px */
+            margin-bottom: 15px; 
+            font-size: 0.95rem;
+        }
+        /* ------------------------------------------------ */
+
     </style>
 </head>
 <body>
@@ -50,54 +126,34 @@
     <script>
         // --- DATOS GLOBALES ---
         const rawData = {
-            labels: [
-                'Qwen 3 VL 4B', 
-                'Granite 4.0 Tiny', 
-                'GPT-OSS 20B', 
-                'Qwen 3 Thinking',
-                'Qwen v1 4B'
-            ],
-            ptk: [904, 283, 557, 607, 2054],       // Tokens
-            segundos: [23.1, 5.3, 15.8, 9.0, 20.7], // Tiempo
-            calidad: [9, 5, 7, 6, 8]               // Calidad
+            labels: ['GPT-OSS 20B', 'Granite 4.0 Tiny', 'Qwen 3 VL 4B', 'Qwen 3 Thinking'],
+            ptk: [557, 283, 904, 607],
+            segundos: [15.8, 5.3, 23.1, 9.0],
+            calidad: [9, 7, 6, 5]
         };
+        const latenciaData = [4.09, 0.54, 0.61, 0.29]; 
 
-        // --- CONFIGURACIÓN GRÁFICA 1: CUANTITATIVA (Tiempo vs Tokens) ---
-        
-        const MAX_TOKENS = 2200;
+        // CONFIGURACIÓN GRÁFICA 1: CUANTITATIVA
+        const MAX_TOKENS = 1200;
         const MAX_SEGUNDOS = 30;
-        
-        const styleTiempo = { color: 'rgba(54, 162, 235, 1)', label: 'Duración (s)' }; // AZUL
-        const styleTokens = { color: 'rgba(255, 99, 132, 1)', label: 'Tokens' };       // ROJO
-        
+        const styleTiempo = { color: 'rgba(54, 162, 235, 1)', label: 'Duración (s)' };
+        const styleTokens = { color: 'rgba(255, 99, 132, 1)', label: 'Tokens' };
         const estadoVisCuant = { tiempo: true, tokens: true };
 
         function calcularCapasCuant() {
             const layers = { back: { data: [], bg: [], border: [], meta: [] }, front: { data: [], bg: [], border: [], meta: [] } };
-
             for (let i = 0; i < rawData.labels.length; i++) {
                 const rawTime = estadoVisCuant.tiempo ? rawData.segundos[i] : 0;
                 const rawTok = estadoVisCuant.tokens ? rawData.ptk[i] : 0;
-
                 const normTime = (rawTime / MAX_SEGUNDOS) * 100;
                 const normTok = (rawTok / MAX_TOKENS) * 100;
-
                 const items = [
                     { norm: normTime, raw: rawTime, style: styleTiempo, type: 'tiempo' },
                     { norm: normTok, raw: rawTok, style: styleTokens, type: 'tokens' }
                 ];
-
-                items.sort((a, b) => b.norm - a.norm); // Mayor al fondo
-
-                layers.back.data.push(items[0].norm);
-                layers.back.bg.push(items[0].style.color);
-                layers.back.border.push(items[0].style.color);
-                layers.back.meta.push(items[0]);
-
-                layers.front.data.push(items[1].norm);
-                layers.front.bg.push(items[1].style.color);
-                layers.front.border.push(items[1].style.color);
-                layers.front.meta.push(items[1]);
+                items.sort((a, b) => b.norm - a.norm);
+                layers.back.data.push(items[0].norm); layers.back.bg.push(items[0].style.color); layers.back.border.push(items[0].style.color); layers.back.meta.push(items[0]);
+                layers.front.data.push(items[1].norm); layers.front.bg.push(items[1].style.color); layers.front.border.push(items[1].style.color); layers.front.meta.push(items[1]);
             }
             return layers;
         }
@@ -115,7 +171,8 @@
                 ]
             },
             options: {
-                responsive: true, maintainAspectRatio: false, animation: { duration: 1500, easing: 'easeOutQuart' },
+                responsive: true, maintainAspectRatio: false, animation: { duration: 1000 },
+                interaction: { mode: 'index', intersect: false },
                 plugins: {
                     title: { display: true, text: 'Análisis Cuantitativo: Rendimiento y Consumo', font: { size: 18, weight: 'bold' }, padding: { bottom: 10 }, color: '#333' },
                     legend: {
@@ -135,7 +192,7 @@
                         }
                     },
                     tooltip: {
-                        enabled: true, mode: 'index', intersect: false, backgroundColor: 'rgba(30, 30, 30, 0.9)', padding: 10,
+                        enabled: true, backgroundColor: 'rgba(30, 30, 30, 0.9)', padding: 10,
                         callbacks: {
                             label: (context) => {
                                 const layer = context.datasetIndex === 0 ? datosCuant.back : datosCuant.front;
@@ -155,9 +212,8 @@
             }
         });
 
-        // --- CONFIGURACIÓN GRÁFICA 2: CUALITATIVA (Calidad) ---
-
-        const styleCalidad = { color: 'rgba(46, 204, 113, 1)', label: 'Calidad (1-10)' }; // VERDE
+        // CONFIGURACIÓN GRÁFICA 2: CUALITATIVA
+        const styleCalidad = { color: 'rgba(46, 204, 113, 1)', label: 'Calidad (1-10)' };
         const ctxCual = document.getElementById('graficaCual').getContext('2d');
 
         const graficaCual = new Chart(ctxCual, {
@@ -167,8 +223,8 @@
                 datasets: [{
                     label: styleCalidad.label,
                     data: rawData.calidad,
-                    backgroundColor: styleCalidad.color,
-                    borderColor: styleCalidad.color,
+                    backgroundColor: rawData.calidad.map(val => val >= 9 ? '#2ecc71' : val >= 7 ? '#f1c40f' : '#e74c3c'),
+                    borderColor: rawData.calidad.map(val => val >= 9 ? '#27ae60' : val >= 7 ? '#d4ac0d' : '#c0392b'),
                     borderWidth: 1,
                     borderRadius: 6,
                     barPercentage: 0.6,
@@ -176,28 +232,22 @@
                 }]
             },
             options: {
-                responsive: true, maintainAspectRatio: false, animation: { duration: 1500, easing: 'easeOutQuart' },
+                responsive: true, maintainAspectRatio: false, animation: { duration: 1000 },
                 plugins: {
                     title: { display: true, text: 'Análisis Cualitativo: Precisión de Respuesta', font: { size: 18, weight: 'bold' }, padding: { bottom: 10 }, color: '#333' },
-                    legend: { display: false }, // Ocultamos leyenda porque es solo un dato
-                    tooltip: {
-                        backgroundColor: 'rgba(30, 30, 30, 0.9)', padding: 10,
-                        callbacks: { label: (context) => `★ Calidad: ${context.raw} / 10` }
-                    }
+                    legend: { display: false },
+                    tooltip: { backgroundColor: 'rgba(30, 30, 30, 0.9)', padding: 10, callbacks: { label: (context) => `★ Calidad: ${context.raw} / 10` } }
                 },
                 scales: {
                     x: { grid: { display: false } },
-                    y: {
-                        beginAtZero: true, max: 10,
-                        title: { display: true, text: 'Puntuación (1-10)', color: styleCalidad.color, font: {weight:'bold'} },
-                        ticks: { stepSize: 1, color: styleCalidad.color }
-                    }
+                    y: { beginAtZero: true, max: 10, title: { display: true, text: 'Puntuación (1-10)', color: styleCalidad.color, font: {weight:'bold'} }, ticks: { stepSize: 1, color: styleCalidad.color } }
                 }
             }
         });
     </script>
-    <div class="chart-wrapper" style="height: auto; min-height: auto; margin-top: 30px;">
-    <h3 style="text-align: center; color: #333; margin-bottom: 20px;">Análisis Detallado de Comportamiento</h3>
+
+    <div class="chart-wrapper" style="height: auto; min-height: auto; margin-top: 15px;">
+    <h3 style="text-align: center; color: #333; margin-bottom: 20px;">Tabla de Modelos</h3>
     <table style="width: 100%; border-collapse: collapse; font-family: 'Segoe UI', sans-serif;">
         <thead>
             <tr style="background-color: #f8f9fa; border-bottom: 2px solid #e9ecef;">
@@ -208,62 +258,294 @@
         </thead>
         <tbody>
             <tr style="border-bottom: 1px solid #e9ecef;">
-                <td style="padding: 15px; font-weight: bold; color: #2c3e50;">Qwen 3 VL 4B</td>
-                <td style="padding: 15px; text-align: center;">
-                    <span style="background-color: #d4edda; color: #155724; padding: 5px 10px; border-radius: 6px; font-weight: bold;">9/10</span>
-                </td>
-                <td style="padding: 15px; line-height: 1.5;">
-                    <strong style="color: #27ae60;">✓ Virtudes:</strong> Es el modelo más completo. No solo acierta, sino que justifica sus respuestas con matices, explicando el contexto (ej: entiende el doble sentido en acertijos de lenguaje).<br>
-                    <strong style="color: #c0392b;">✗ Fallos:</strong> No presentó errores graves en la batería de pruebas; su único "defecto" es que puede ser algo extenso si se busca una respuesta de una sola palabra.
-                </td>
-            </tr>
-            
-            <tr style="border-bottom: 1px solid #e9ecef;">
-                <td style="padding: 15px; font-weight: bold; color: #2c3e50;">Qwen v1 4B</td>
-                <td style="padding: 15px; text-align: center;">
-                    <span style="background-color: #d4edda; color: #155724; padding: 5px 10px; border-radius: 6px; font-weight: bold;">8/10</span>
-                </td>
-                <td style="padding: 15px; line-height: 1.5;">
-                    <strong style="color: #27ae60;">✓ Virtudes:</strong> Muy robusto en lógica pura. Fue capaz de resolver problemas de deducción compleja (tipo "caballeros y embusteros") sin perderse en el razonamiento.<br>
-                    <strong style="color: #c0392b;">✗ Fallos:</strong> Su estilo es más "robótico" y directo que la versión VL. Acierta, pero no educa ni elabora tanto la respuesta.
-                </td>
-            </tr>
-
-            <tr style="border-bottom: 1px solid #e9ecef;">
                 <td style="padding: 15px; font-weight: bold; color: #2c3e50;">GPT-OSS 20B</td>
-                <td style="padding: 15px; text-align: center;">
-                    <span style="background-color: #fff3cd; color: #856404; padding: 5px 10px; border-radius: 6px; font-weight: bold;">7/10</span>
-                </td>
+                <td style="padding: 15px; text-align: center;"><span style="background-color: #d4edda; color: #155724; padding: 5px 10px; border-radius: 6px; font-weight: bold;">9/10</span></td>
                 <td style="padding: 15px; line-height: 1.5;">
-                    <strong style="color: #27ae60;">✓ Virtudes:</strong> Cumplidor. Resuelve correctamente problemas de lógica secuencial (quién vive en qué casa) y mantiene la coherencia.<br>
-                    <strong style="color: #c0392b;">✗ Fallos:</strong> Le falta "chispa". Sus respuestas son extremadamente estándar y mecánicas. Es fiable pero no destaca en creatividad ni en matices lingüísticos.
+                    <strong style="color: #27ae60;">✓ Virtudes:</strong> Cumplidor. Resuelve correctamente la mayoría de preguntas o problemas de lógica secuencial (quien vive en que casa) y mantiene la coherencia.<br>
+                    <strong style="color: #c0392b;">✗ Fallos:</strong> Es fiable pero le falta un poco de creatividad.
                 </td>
             </tr>
-
+            <tr style="border-bottom: 1px solid #e9ecef;">
+                <td style="padding: 15px; font-weight: bold; color: #2c3e50;">Granite 4.0 Tiny</td>
+                <td style="padding: 15px; text-align: center;"><span style="background-color: #fff3cd; color: #856404; padding: 5px 10px; border-radius: 6px; font-weight: bold;">7/10</span></td>
+                <td style="padding: 15px; line-height: 1.5;">
+                    <strong style="color: #27ae60;">✓ Virtudes:</strong> Concisión extrema. Si solo buscas un dato puntual sin texto alrededor, es rápido.<br>
+                    <strong style="color: #c0392b;">✗ Fallos:</strong> Carece de capacidad conversacional. Sus respuestas son listas de palabras o monosílabos sin conectar frases, lo que lo hace sentir muy limitado para un chat.
+                </td>
+            </tr>
+            <tr style="border-bottom: 1px solid #e9ecef;">
+                <td style="padding: 15px; font-weight: bold; color: #2c3e50;">Qwen 3 VL 4B</td>
+                <td style="padding: 15px; text-align: center;"><span style="background-color: #f8d7da; color: #721c24; padding: 5px 10px; border-radius: 6px; font-weight: bold;">6/10</span></td>
+                <td style="padding: 15px; line-height: 1.5;">
+                    <strong style="color: #27ae60;">✓ Virtudes:</strong> No solo acierta, sino que justifica sus respuestas con matices, explicando el contexto (ej: entiende el doble sentido en acertijos de lenguaje).<br>
+                    <strong style="color: #c0392b;">✗ Fallos:</strong> Es poco fiable, requirió de varios intentos, aproximadamente 3 por cada batería de preguntas, para entender la pregunta y responderla moderadamente bien.
+                </td>
+            </tr>
             <tr style="border-bottom: 1px solid #e9ecef;">
                 <td style="padding: 15px; font-weight: bold; color: #2c3e50;">Qwen 3 Thinking</td>
-                <td style="padding: 15px; text-align: center;">
-                    <span style="background-color: #fff3cd; color: #856404; padding: 5px 10px; border-radius: 6px; font-weight: bold;">6/10</span>
-                </td>
+                <td style="padding: 15px; text-align: center;"><span style="background-color: #f8d7da; color: #721c24; padding: 5px 10px; border-radius: 6px; font-weight: bold;">5/10</span></td>
                 <td style="padding: 15px; line-height: 1.5;">
                     <strong style="color: #27ae60;">✓ Virtudes:</strong> Muestra su cadena de pensamiento ("Thinking Process"), lo cual es útil para ver cómo intenta deducir.<br>
                     <strong style="color: #c0392b;">✗ Fallos:</strong> Sufre de "sobre-análisis". Al intentar pensar demasiado respuestas sencillas, acaba alucinando (inventando) respuestas incorrectas y absurdas en acertijos básicos de niños.
                 </td>
             </tr>
-
-            <tr style="border-bottom: 1px solid #e9ecef;">
-                <td style="padding: 15px; font-weight: bold; color: #2c3e50;">Granite 4.0 Tiny</td>
-                <td style="padding: 15px; text-align: center;">
-                    <span style="background-color: #f8d7da; color: #721c24; padding: 5px 10px; border-radius: 6px; font-weight: bold;">5/10</span>
-                </td>
-                <td style="padding: 15px; line-height: 1.5;">
-                    <strong style="color: #27ae60;">✓ Virtudes:</strong> Concisión extrema. Si solo buscas un dato puntual sin texto alrededor, es rápido.<br>
-                    <strong style="color: #c0392b;">✗ Fallos:</strong> Carece de capacidad conversacional. Sus respuestas son listas de palabras o monosílabos ("Reloj", "Viento") sin conectar frases, lo que lo hace sentir muy limitado para un chat.
-                </td>
-            </tr>
         </tbody>
     </table>
-</div>
+    </div>
+
+    <div class="chart-wrapper">
+        <canvas id="graficaLatencia"></canvas>
+    </div>
+    <script>
+        const ctxLat = document.getElementById('graficaLatencia').getContext('2d');
+        new Chart(ctxLat, {
+            type: 'bar',
+            data: {
+                labels: rawData.labels,
+                datasets: [{
+                    label: 'Tiempo al Primer Token (s)',
+                    data: latenciaData,
+                    backgroundColor: 'rgba(255, 159, 64, 0.7)',
+                    borderColor: 'rgba(255, 159, 64, 1)',
+                    borderWidth: 1, borderRadius: 6, barPercentage: 0.6, categoryPercentage: 0.8
+                }]
+            },
+            options: {
+                responsive: true, maintainAspectRatio: false,
+                plugins: {
+                    title: { display: true, text: 'Latencia Inicial (to first token o tiempo de reacción medio)', font: { size: 18, weight: 'bold' }, padding: { bottom: 10 }, color: '#333' },
+                    legend: { display: false },
+                    tooltip: { backgroundColor: 'rgba(30, 30, 30, 0.9)', padding: 10, callbacks: { label: (context) => `⏱ ${context.raw} segundos` } }
+                },
+                scales: { x: { grid: { display: false } }, y: { beginAtZero: true, title: { display: true, text: 'Segundos (s)', color: '#666', font: {weight:'bold'} } } }
+            }
+        });
+    </script>
+
+    <div class="chart-wrapper" style="height: auto; min-height: auto; margin-top: 15px;">
+        <h3 style="text-align: center; color: #333; margin-bottom: 20px;">Coste Computacional y Eficiencia</h3>
+        <table style="width: 100%; border-collapse: collapse; font-family: 'Segoe UI', sans-serif;">
+            <thead>
+                <tr style="background-color: #f8f9fa; border-bottom: 2px solid #e9ecef;">
+                    <th style="padding: 15px; text-align: left; color: #495057; width: 20%;">Modelo</th>
+                    <th style="padding: 15px; text-align: center; color: #495057; width: 20%;">💾 Almacenamiento</th>
+                    <th style="padding: 15px; text-align: center; color: #495057; width: 20%;">⏳ Latencia</th>
+                    <th style="padding: 15px; text-align: center; color: #495057; width: 20%;">⚡ Velocidad<br><span style="font-size: 0.75em; color: #95a5a6; font-weight: normal;">(T/S = Tokens/seg)</span></th>
+                    <th style="padding: 15px; text-align: center; color: #495057; width: 20%;">Veredicto final</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr style="border-bottom: 1px solid #e9ecef;">
+                    <td style="padding: 15px; font-weight: bold; color: #2c3e50;">GPT-OSS 20B</td>
+                    <td style="padding: 15px; text-align: center; font-family: 'Consolas', monospace; font-weight: bold; color: #555;">12.10 GB</td>
+                    <td style="padding: 15px; text-align: center; font-family: 'Consolas', monospace; font-weight: bold; color: #555;">0.49 s</td>
+                    <td style="padding: 15px; text-align: center; font-family: 'Consolas', monospace; font-weight: bold; color: #555;">35.04 T/s</td>
+                    <td style="padding: 15px; text-align: center;"><span style="background-color: #f8d7da; color: #721c24; padding: 5px 10px; border-radius: 6px; font-weight: bold;">Alto Coste</span><div style="font-size: 0.75em; color: #666; margin-top: 4px;">Pesado y Lento</div></td>
+                </tr>
+                <tr style="border-bottom: 1px solid #e9ecef;">
+                    <td style="padding: 15px; font-weight: bold; color: #2c3e50;">Qwen 3 VL 4B</td>
+                    <td style="padding: 15px; text-align: center; font-family: 'Consolas', monospace; font-weight: bold; color: #555;">3.11 GB</td>
+                    <td style="padding: 15px; text-align: center; font-family: 'Consolas', monospace; font-weight: bold; color: #555;">0.61 s</td>
+                    <td style="padding: 15px; text-align: center; font-family: 'Consolas', monospace; font-weight: bold; color: #555;">39.14 T/s</td>
+                    <td style="padding: 15px; text-align: center;"><span style="background-color: #fff3cd; color: #856404; padding: 5px 10px; border-radius: 6px; font-weight: bold;">Medio</span><div style="font-size: 0.75em; color: #666; margin-top: 4px;">Latencia Alta</div></td>
+                </tr>
+                <tr style="border-bottom: 1px solid #e9ecef;">
+                    <td style="padding: 15px; font-weight: bold; color: #2c3e50;">Granite 4.0 Tiny</td>
+                    <td style="padding: 15px; text-align: center; font-family: 'Consolas', monospace; font-weight: bold; color: #555;">Muy Bajo</td>
+                    <td style="padding: 15px; text-align: center; font-family: 'Consolas', monospace; font-weight: bold; color: #555;">0.16 s</td>
+                    <td style="padding: 15px; text-align: center; font-family: 'Consolas', monospace; font-weight: bold; color: #555;">56.75 T/s</td>
+                    <td style="padding: 15px; text-align: center;"><span style="background-color: #d1ecf1; color: #0c5460; padding: 5px 10px; border-radius: 6px; font-weight: bold;">Muy Bajo</span><div style="font-size: 0.75em; color: #666; margin-top: 4px;">Ultraligero</div></td>
+                </tr>
+                <tr style="border-bottom: 1px solid #e9ecef;">
+                    <td style="padding: 15px; font-weight: bold; color: #2c3e50;">Qwen 3 Thinking</td>
+                    <td style="padding: 15px; text-align: center; font-family: 'Consolas', monospace; font-weight: bold; color: #555;">2.28 GB</td>
+                    <td style="padding: 15px; text-align: center; font-family: 'Consolas', monospace; font-weight: bold; color: #555;">0.19 s</td>
+                    <td style="padding: 15px; text-align: center; font-family: 'Consolas', monospace; font-weight: bold; color: #555;">83.41 T/s</td>
+                    <td style="padding: 15px; text-align: center;"><span style="background-color: #d4edda; color: #155724; padding: 5px 10px; border-radius: 6px; font-weight: bold;">Eficiente</span><div style="font-size: 0.75em; color: #666; margin-top: 4px;">Rendimiento Top</div></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <h2 class="section-title">Comparativa detallada de rendimiento completo: Windows vs Mac</h2>
+    <p class="section-subtitle">Métricas extendidas: T/s, Tokens Totales, TTFT y Tiempo Total</p>
+
+    <div class="accuracy-grid">
+        <div class="chart-container">
+            <div class="chart-title">Windows - Rendimiento Completo</div>
+            <div class="chart-subtitle-detail">Windows: GPT OSS 36.19 t/s | Qwen3 109.11 t/s | Granite 72.71 t/s | Qwen3 Thinking 101.20 t/s</div>
+            <canvas id="windowsPerf"></canvas>
+        </div>
+
+        <div class="chart-container">
+            <div class="chart-title">Mac - Rendimiento Completo</div>
+            <div class="chart-subtitle-detail">Mac: GPT OSS 34.15 t/s | Qwen3 34.76 t/s | Granite 39.14 t/s | Qwen3 Thinking 34.32 t/s</div>
+            <canvas id="macPerf"></canvas>
+        </div>
+    </div>
+
+    <script>
+        // Etiquetas comunes
+        const labelsPerf = ['GPT OSS', 'Qwen3', 'Granite', 'Qwen3 Thinking'];
+
+        // Datos estimados de la imagen para WINDOWS
+        const winData = {
+            ts: [36.19, 109.11, 72.71, 101.20],
+            tokens: [15, 9, 1, 143], // Escala x100 aprox
+            ttft: [5, 2, 2, 3],      // Escala x10 aprox
+            time: [42, 9, 2, 142]    // Segundos aprox
+        };
+
+        // Datos estimados de la imagen para MAC
+        const macData = {
+            ts: [34.15, 34.76, 39.14, 34.32],
+            tokens: [6, 42, 9, 34],  // Escala x100 aprox
+            ttft: [105, 8, 6, 8],    // Escala x10 (GPT OSS muy alto)
+            time: [28, 125, 27, 100] // Segundos aprox
+        };
+
+        const bgColors = [
+            'rgba(54, 162, 235, 0.7)',  // Azul (T/s)
+            'rgba(255, 206, 86, 0.7)',  // Amarillo (Tokens)
+            'rgba(75, 192, 192, 0.7)',  // Verde azulado (TTFT)
+            'rgba(255, 99, 132, 0.7)'   // Rosa (Tiempo)
+        ];
+        
+        const borderColors = [
+            'rgba(54, 162, 235, 1)',
+            'rgba(255, 206, 86, 1)',
+            'rgba(75, 192, 192, 1)',
+            'rgba(255, 99, 132, 1)'
+        ];
+
+        // Función para generar datasets
+        function createDatasets(dataObj) {
+            return [
+                { label: 'Tokens/segundo', data: dataObj.ts, backgroundColor: bgColors[0], borderColor: borderColors[0], borderWidth: 1 },
+                { label: 'Tokens Totales (x100)', data: dataObj.tokens, backgroundColor: bgColors[1], borderColor: borderColors[1], borderWidth: 1 },
+                { label: 'TTFT (seg x10)', data: dataObj.ttft, backgroundColor: bgColors[2], borderColor: borderColors[2], borderWidth: 1 },
+                { label: 'Tiempo Total (seg)', data: dataObj.time, backgroundColor: bgColors[3], borderColor: borderColors[3], borderWidth: 1 }
+            ];
+        }
+
+        const perfOptions = {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: { position: 'top', labels: { boxWidth: 15, font: { size: 10 } } },
+                tooltip: { mode: 'index', intersect: false }
+            },
+            scales: {
+                y: { beginAtZero: true },
+                x: { grid: { display: false } }
+            }
+        };
+
+        // Renderizar Windows
+        new Chart(document.getElementById('windowsPerf'), {
+            type: 'bar',
+            data: { labels: labelsPerf, datasets: createDatasets(winData) },
+            options: perfOptions
+        });
+
+        // Renderizar Mac
+        new Chart(document.getElementById('macPerf'), {
+            type: 'bar',
+            data: { labels: labelsPerf, datasets: createDatasets(macData) },
+            options: perfOptions
+        });
+    </script>
+    
+    <h2 class="section-title">Comparativa cualitativa: Windows vs Mac</h2>
+    <p class="section-subtitle">Batería de 10 Preguntas</p>
+
+    <div class="accuracy-grid">
+        <div class="chart-container">
+            <div class="chart-title">Windows - Respuestas Correctas</div>
+            <canvas id="windowsAccuracy"></canvas>
+        </div>
+
+        <div class="chart-container">
+            <div class="chart-title">Mac - Respuestas Correctas</div>
+            <canvas id="macAccuracy"></canvas>
+        </div>
+    </div>
+
+    <script>
+        const dataAccuracyWindows = {
+            labels: ['GPT OSS', 'Qwen3', 'Granite', 'Qwen3 Thinking'],
+            datasets: [{
+                label: 'Respuestas Correctas (de 10)',
+                data: [9, 4, 5, 4],
+                backgroundColor: ['rgba(34, 197, 94, 0.8)', 'rgba(249, 115, 22, 0.8)', 'rgba(59, 130, 246, 0.8)', 'rgba(168, 85, 247, 0.8)'],
+                borderColor: ['rgba(34, 197, 94, 1)', 'rgba(249, 115, 22, 1)', 'rgba(59, 130, 246, 1)', 'rgba(168, 85, 247, 1)'],
+                borderWidth: 2
+            }]
+        };
+
+        const dataAccuracyMac = {
+            labels: ['GPT OSS', 'Qwen3', 'Granite', 'Qwen3 Thinking'],
+            datasets: [{
+                label: 'Respuestas Correctas (de 10)',
+                data: [9, 4, 5, 0],
+                backgroundColor: ['rgba(34, 197, 94, 0.8)', 'rgba(249, 115, 22, 0.8)', 'rgba(59, 130, 246, 0.8)', 'rgba(168, 85, 247, 0.8)'],
+                borderColor: ['rgba(34, 197, 94, 1)', 'rgba(249, 115, 22, 1)', 'rgba(59, 130, 246, 1)', 'rgba(168, 85, 247, 1)'],
+                borderWidth: 2
+            }]
+        };
+
+        // Configuracion comun
+        const config = {
+            type: 'bar',
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                interaction: {
+                    mode: 'nearest', 
+                    axis: 'y', 
+                    intersect: false
+                },
+                plugins: {
+                    legend: { position: 'top' }
+                },
+                scales: {
+                    y: { beginAtZero: true, grid: { color: 'rgba(0,0,0,0.05)' } },
+                    x: { grid: { display: false } }
+                }
+            }
+        };
+
+        // Graficos de precision
+        new Chart(document.getElementById('windowsAccuracy'), {
+            ...config,
+            data: dataAccuracyWindows,
+            options: {
+                ...config.options,
+                indexAxis: 'y', // ESTO HACE QUE LAS BARRAS SEAN HORIZONTALES
+                plugins: {
+                    ...config.options.plugins,
+                    title: { display: true, text: 'Windows: 9 | 4 | 5 | 4 respuestas correctas' }
+                }
+            }
+        });
+
+        new Chart(document.getElementById('macAccuracy'), {
+            ...config,
+            data: dataAccuracyMac,
+            options: {
+                ...config.options,
+                indexAxis: 'y', // ESTO HACE QUE LAS BARRAS SEAN HORIZONTALES
+                plugins: {
+                    ...config.options.plugins,
+                    title: { display: true, text: 'Mac: 9 | 4 | 5 | 0 respuestas correctas' }
+                }
+            }
+        });
+    </script>
+    <div class="chart-wrapper" style="height: auto; min-height: auto; margin-top: 15px;">
+<fieldset style="width: 100%; box-sizing: border-box; border-top: 1px solid #ccc; border-bottom: none; border-left: none; border-right: none; text-align: center; margin: 20px 0;">
+   <legend style="padding: 0 10px; color: #000000;">Documentación</legend>
+   <p>esta va a ser la documentación del proyecto en el que tenemos que poner lo que diga moaises, que es una comparativa de las ias y cosas varias raras, como que nos han parecido las ias, las complejidades que hemos encontrado, etc</p>
+</fieldset>
 </body>
 </html>
-
