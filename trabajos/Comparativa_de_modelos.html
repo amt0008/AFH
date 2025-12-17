@@ -3,10 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Benchmark IA: Cuantitativo vs Cualitativo</title>
+    <title>Comparativa de modelos IA</title>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
     <style>
+        /* ESTO HACE QUE EL SCROLL SEA SUAVE AL PULSAR EL ENLACE */
+        html {
+            scroll-behavior: smooth;
+        }
+
         body {
             background-color: #f4f4f9;
             margin: 0;
@@ -15,11 +20,10 @@
             flex-direction: column;
             align-items: center;
             font-family: 'Segoe UI', sans-serif;
-            /* CAMBIO: Reducido de 30px a 10px para pegar los bloques */
             gap: 10px; 
         }
 
-        /* Contenedor principal de gráficas */
+        /* Contenedor principal de gráficas y tablas */
         .chart-wrapper {
             position: relative;
             width: 90%;
@@ -30,6 +34,13 @@
             border-radius: 20px;
             height: 400px;
             min-height: 400px;
+            box-sizing: border-box; 
+        }
+
+        /* Clase auxiliar para contenedores que deben adaptarse al contenido (tablas) */
+        .auto-height {
+            height: auto !important;
+            min-height: auto !important;
         }
 
         canvas {
@@ -44,7 +55,6 @@
             gap: 20px;
             width: 90%;
             max-width: 1200px;
-            /* CAMBIO: Eliminado el margen inferior para pegar al siguiente título */
             margin-bottom: 0px; 
         }
 
@@ -68,7 +78,6 @@
             height: 30px; 
         }
         
-        /* Subtítulo específico dentro de las tarjetas */
         .chart-subtitle-detail {
             text-align: center;
             font-size: 0.75em;
@@ -80,7 +89,6 @@
             text-overflow: ellipsis;
         }
 
-        /* Ajuste para el canvas dentro de chart-container */
         .chart-container canvas {
             height: calc(100% - 40px) !important; 
         }
@@ -91,10 +99,9 @@
             }
         }
         
-        /* --- ESTILOS DE TÍTULOS DE SECCIÓN (AJUSTADOS) --- */
+        /* --- ESTILOS DE TÍTULOS DE SECCIÓN --- */
         h2.section-title {
             color: #1a1a1a;
-            /* CAMBIO: Reducido de 30px a 15px */
             margin-top: 15px;    
             margin-bottom: 0px;  
             text-align: center;
@@ -105,15 +112,89 @@
             text-align: center;
             color: #666;
             margin-top: 5px;    
-            /* CAMBIO: Reducido de 25px a 15px */
             margin-bottom: 15px; 
             font-size: 0.95rem;
         }
-        /* ------------------------------------------------ */
+
+        /* --- ESTILOS GENERALES DE TABLAS --- */
+        .styled-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-family: 'Segoe UI', sans-serif;
+            margin-bottom: 10px;
+        }
+
+        .styled-table thead tr {
+            background-color: #f8f9fa;
+            border-bottom: 2px solid #e9ecef;
+        }
+
+        .styled-table th {
+            padding: 12px 15px;
+            text-align: left;
+            color: #495057;
+            font-weight: 600;
+        }
+
+        .styled-table td {
+            padding: 12px 15px;
+            border-bottom: 1px solid #e9ecef;
+            color: #2c3e50;
+        }
+
+        .styled-table tr:last-child td {
+            border-bottom: none;
+        }
+
+        /* Estilo específico para datos numéricos/técnicos */
+        .mono-data {
+            font-family: 'Consolas', monospace;
+            font-weight: bold;
+            color: #555;
+            background-color: #f8f9fa;
+            padding: 4px 8px;
+            border-radius: 4px;
+            border: 1px solid #e9ecef;
+        }
+
+        /* Layout para las dos tablas lado a lado */
+        .tables-row {
+            display: flex;
+            gap: 30px;
+            flex-wrap: wrap;
+        }
+
+        .table-column {
+            flex: 1;
+            min-width: 300px;
+        }
+
+        /* Caja de comentarios estilo estudiante */
+        .insight-box {
+            margin-top: 10px;
+            padding: 15px;
+            background-color: #f8f9fa;
+            /* SE HA ELIMINADO EL BORDE AZUL AQUÍ */
+            border-radius: 4px;
+            font-size: 0.95rem; 
+            color: #444;
+            line-height: 1.5;
+            font-style: italic; 
+        }
+
+        .insight-highlight {
+            font-weight: bold;
+            color: #1a1a1a;
+            font-style: normal;
+        }
 
     </style>
 </head>
 <body>
+
+    <p style="color: gray; width: 90%; max-width: 1200px; text-align: center; margin-bottom: 10px; font-size: 0.9rem;">
+        Nota: La <a href="#zona-documentacion" style="color: #3b82f6; text-decoration: underline; cursor: pointer;">documentación del proyecto</a> se encuentra situada al final de la página.
+    </p>
 
     <div class="chart-wrapper">
         <canvas id="graficaCuant"></canvas>
@@ -246,45 +327,45 @@
         });
     </script>
 
-    <div class="chart-wrapper" style="height: auto; min-height: auto; margin-top: 15px;">
+    <div class="chart-wrapper auto-height" style="margin-top: 15px;">
     <h3 style="text-align: center; color: #333; margin-bottom: 20px;">Tabla de Modelos</h3>
-    <table style="width: 100%; border-collapse: collapse; font-family: 'Segoe UI', sans-serif;">
+    <table class="styled-table">
         <thead>
-            <tr style="background-color: #f8f9fa; border-bottom: 2px solid #e9ecef;">
-                <th style="padding: 15px; text-align: left; color: #495057; width: 20%;">Modelo</th>
-                <th style="padding: 15px; text-align: center; color: #495057; width: 15%;">Puntuación</th>
-                <th style="padding: 15px; text-align: left; color: #495057; width: 65%;">Virtudes y Fallos Detectados</th>
+            <tr>
+                <th style="width: 20%;">Modelo</th>
+                <th style="width: 15%; text-align: center;">Puntuación</th>
+                <th style="width: 65%;">Virtudes y Fallos Detectados</th>
             </tr>
         </thead>
         <tbody>
-            <tr style="border-bottom: 1px solid #e9ecef;">
-                <td style="padding: 15px; font-weight: bold; color: #2c3e50;">GPT-OSS 20B</td>
-                <td style="padding: 15px; text-align: center;"><span style="background-color: #d4edda; color: #155724; padding: 5px 10px; border-radius: 6px; font-weight: bold;">9/10</span></td>
-                <td style="padding: 15px; line-height: 1.5;">
+            <tr>
+                <td style="font-weight: bold; color: #2c3e50;">GPT-OSS 20B</td>
+                <td style="text-align: center;"><span style="background-color: #d4edda; color: #155724; padding: 5px 10px; border-radius: 6px; font-weight: bold;">9/10</span></td>
+                <td style="line-height: 1.5;">
                     <strong style="color: #27ae60;">✓ Virtudes:</strong> Cumplidor. Resuelve correctamente la mayoría de preguntas o problemas de lógica secuencial (quien vive en que casa) y mantiene la coherencia.<br>
                     <strong style="color: #c0392b;">✗ Fallos:</strong> Es fiable pero le falta un poco de creatividad.
                 </td>
             </tr>
-            <tr style="border-bottom: 1px solid #e9ecef;">
-                <td style="padding: 15px; font-weight: bold; color: #2c3e50;">Granite 4.0 Tiny</td>
-                <td style="padding: 15px; text-align: center;"><span style="background-color: #fff3cd; color: #856404; padding: 5px 10px; border-radius: 6px; font-weight: bold;">7/10</span></td>
-                <td style="padding: 15px; line-height: 1.5;">
+            <tr>
+                <td style="font-weight: bold; color: #2c3e50;">Granite 4.0 Tiny</td>
+                <td style="text-align: center;"><span style="background-color: #fff3cd; color: #856404; padding: 5px 10px; border-radius: 6px; font-weight: bold;">7/10</span></td>
+                <td style="line-height: 1.5;">
                     <strong style="color: #27ae60;">✓ Virtudes:</strong> Concisión extrema. Si solo buscas un dato puntual sin texto alrededor, es rápido.<br>
                     <strong style="color: #c0392b;">✗ Fallos:</strong> Carece de capacidad conversacional. Sus respuestas son listas de palabras o monosílabos sin conectar frases, lo que lo hace sentir muy limitado para un chat.
                 </td>
             </tr>
-            <tr style="border-bottom: 1px solid #e9ecef;">
-                <td style="padding: 15px; font-weight: bold; color: #2c3e50;">Qwen 3 VL 4B</td>
-                <td style="padding: 15px; text-align: center;"><span style="background-color: #f8d7da; color: #721c24; padding: 5px 10px; border-radius: 6px; font-weight: bold;">6/10</span></td>
-                <td style="padding: 15px; line-height: 1.5;">
+            <tr>
+                <td style="font-weight: bold; color: #2c3e50;">Qwen 3 VL 4B</td>
+                <td style="text-align: center;"><span style="background-color: #f8d7da; color: #721c24; padding: 5px 10px; border-radius: 6px; font-weight: bold;">6/10</span></td>
+                <td style="line-height: 1.5;">
                     <strong style="color: #27ae60;">✓ Virtudes:</strong> No solo acierta, sino que justifica sus respuestas con matices, explicando el contexto (ej: entiende el doble sentido en acertijos de lenguaje).<br>
                     <strong style="color: #c0392b;">✗ Fallos:</strong> Es poco fiable, requirió de varios intentos, aproximadamente 3 por cada batería de preguntas, para entender la pregunta y responderla moderadamente bien.
                 </td>
             </tr>
-            <tr style="border-bottom: 1px solid #e9ecef;">
-                <td style="padding: 15px; font-weight: bold; color: #2c3e50;">Qwen 3 Thinking</td>
-                <td style="padding: 15px; text-align: center;"><span style="background-color: #f8d7da; color: #721c24; padding: 5px 10px; border-radius: 6px; font-weight: bold;">5/10</span></td>
-                <td style="padding: 15px; line-height: 1.5;">
+            <tr>
+                <td style="font-weight: bold; color: #2c3e50;">Qwen 3 Thinking</td>
+                <td style="text-align: center;"><span style="background-color: #f8d7da; color: #721c24; padding: 5px 10px; border-radius: 6px; font-weight: bold;">5/10</span></td>
+                <td style="line-height: 1.5;">
                     <strong style="color: #27ae60;">✓ Virtudes:</strong> Muestra su cadena de pensamiento ("Thinking Process"), lo cual es útil para ver cómo intenta deducir.<br>
                     <strong style="color: #c0392b;">✗ Fallos:</strong> Sufre de "sobre-análisis". Al intentar pensar demasiado respuestas sencillas, acaba alucinando (inventando) respuestas incorrectas y absurdas en acertijos básicos de niños.
                 </td>
@@ -293,6 +374,78 @@
     </table>
     </div>
 
+    <h2 class="section-title">Resumen cuantitativo <span style="font-size: 0.6em; vertical-align: middle; background-color: #e9ecef; color: #666; padding: 3px 10px; border-radius: 10px; margin-left: 10px; font-weight: normal;">Bench de 10 preguntas</span></h2>
+    <p class="section-subtitle">Métricas de tokens generados en un entorno Windows vs un entorno Mac (Inferencia 100% en local)</p>
+
+    <div class="chart-wrapper auto-height">
+        <div class="tables-row">
+            <div class="table-column">
+                <h3 style="text-align: center; color: #333; margin-bottom: 15px;">Longitud de respuestas en Windows</h3>
+                <table class="styled-table">
+                    <thead>
+                        <tr>
+                            <th>Modelo (Windows)</th>
+                            <th style="text-align: right;">Tokens totales</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>GPT-OSS 20B</td>
+                            <td style="text-align: right;"><span class="mono-data">1539 tokens</span></td>
+                        </tr>
+                        <tr>
+                            <td>Qwen 3 VL 4B</td>
+                            <td style="text-align: right;"><span class="mono-data">910 tokens</span></td>
+                        </tr>
+                        <tr>
+                            <td>Granite 4.0 Tiny</td>
+                            <td style="text-align: right;"><span class="mono-data">79 tokens</span></td>
+                        </tr>
+                        <tr>
+                            <td>Qwen 3 Thinking</td>
+                            <td style="text-align: right;"><span class="mono-data">14400 tokens</span></td>
+                        </tr>
+                    </tbody>
+                </table>
+                <div class="insight-box">
+                     <span class="insight-highlight">Qwen 3 Thinking</span> se extiende muchísimo más explicando sus razonamientos, mientras que en el lado opuesto está <span class="insight-highlight">Granite</span>, que va directo al grano y suelta lo justo y necesario.
+                </div>
+            </div>
+
+            <div class="table-column">
+                <h3 style="text-align: center; color: #333; margin-bottom: 15px;">Longitud de respuestas en Mac</h3>
+                <table class="styled-table">
+                    <thead>
+                        <tr>
+                            <th>Modelo (Mac)</th>
+                            <th style="text-align: right;">Tokens totales</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>GPT-OSS 20B</td>
+                            <td style="text-align: right;"><span class="mono-data">600 tokens</span></td>
+                        </tr>
+                        <tr>
+                            <td>Qwen 3 VL 4B</td>
+                            <td style="text-align: right;"><span class="mono-data">4344 tokens</span></td>
+                        </tr>
+                        <tr>
+                            <td>Granite 4.0 Tiny</td>
+                            <td style="text-align: right;"><span class="mono-data">904 tokens</span></td>
+                        </tr>
+                        <tr>
+                            <td>Qwen 3 Thinking</td>
+                            <td style="text-align: right;"><span class="mono-data">3405 tokens</span></td>
+                        </tr>
+                    </tbody>
+                </table>
+                <div class="insight-box">
+                    En <span class="insight-highlight">Mac</span>, los dos modelos de la familia Qwen son los que más escriben. Se nota bastante diferencia con GPT-OSS y Granite, que son mucho más "cortos" y concisos respondiendo lo mismo.
+                </div>
+            </div>
+        </div>
+    </div>
     <div class="chart-wrapper">
         <canvas id="graficaLatencia"></canvas>
     </div>
@@ -322,46 +475,46 @@
         });
     </script>
 
-    <div class="chart-wrapper" style="height: auto; min-height: auto; margin-top: 15px;">
+    <div class="chart-wrapper auto-height" style="margin-top: 15px;">
         <h3 style="text-align: center; color: #333; margin-bottom: 20px;">Coste Computacional y Eficiencia</h3>
-        <table style="width: 100%; border-collapse: collapse; font-family: 'Segoe UI', sans-serif;">
+        <table class="styled-table">
             <thead>
-                <tr style="background-color: #f8f9fa; border-bottom: 2px solid #e9ecef;">
-                    <th style="padding: 15px; text-align: left; color: #495057; width: 20%;">Modelo</th>
-                    <th style="padding: 15px; text-align: center; color: #495057; width: 20%;">💾 Almacenamiento</th>
-                    <th style="padding: 15px; text-align: center; color: #495057; width: 20%;">⏳ Latencia</th>
-                    <th style="padding: 15px; text-align: center; color: #495057; width: 20%;">⚡ Velocidad<br><span style="font-size: 0.75em; color: #95a5a6; font-weight: normal;">(T/S = Tokens/seg)</span></th>
-                    <th style="padding: 15px; text-align: center; color: #495057; width: 20%;">Veredicto final</th>
+                <tr>
+                    <th style="width: 20%;">Modelo</th>
+                    <th style="width: 20%; text-align: center;">💾 Almacenamiento</th>
+                    <th style="width: 20%; text-align: center;">⏳ Latencia</th>
+                    <th style="width: 20%; text-align: center;">⚡ Velocidad<br><span style="font-size: 0.75em; color: #95a5a6; font-weight: normal;">(T/S = Tokens/seg)</span></th>
+                    <th style="width: 20%; text-align: center;">Veredicto final</th>
                 </tr>
             </thead>
             <tbody>
-                <tr style="border-bottom: 1px solid #e9ecef;">
-                    <td style="padding: 15px; font-weight: bold; color: #2c3e50;">GPT-OSS 20B</td>
-                    <td style="padding: 15px; text-align: center; font-family: 'Consolas', monospace; font-weight: bold; color: #555;">12.10 GB</td>
-                    <td style="padding: 15px; text-align: center; font-family: 'Consolas', monospace; font-weight: bold; color: #555;">0.49 s</td>
-                    <td style="padding: 15px; text-align: center; font-family: 'Consolas', monospace; font-weight: bold; color: #555;">35.04 T/s</td>
-                    <td style="padding: 15px; text-align: center;"><span style="background-color: #f8d7da; color: #721c24; padding: 5px 10px; border-radius: 6px; font-weight: bold;">Alto Coste</span><div style="font-size: 0.75em; color: #666; margin-top: 4px;">Pesado y Lento</div></td>
+                <tr>
+                    <td style="font-weight: bold; color: #2c3e50;">GPT-OSS 20B</td>
+                    <td style="text-align: center;"><span class="mono-data">12.10 GB</span></td>
+                    <td style="text-align: center;"><span class="mono-data">0.49 s</span></td>
+                    <td style="text-align: center;"><span class="mono-data">35.04 T/s</span></td>
+                    <td style="text-align: center;"><span style="background-color: #f8d7da; color: #721c24; padding: 5px 10px; border-radius: 6px; font-weight: bold;">Alto Coste</span><div style="font-size: 0.75em; color: #666; margin-top: 4px;">Pesado y Lento</div></td>
                 </tr>
-                <tr style="border-bottom: 1px solid #e9ecef;">
-                    <td style="padding: 15px; font-weight: bold; color: #2c3e50;">Qwen 3 VL 4B</td>
-                    <td style="padding: 15px; text-align: center; font-family: 'Consolas', monospace; font-weight: bold; color: #555;">3.11 GB</td>
-                    <td style="padding: 15px; text-align: center; font-family: 'Consolas', monospace; font-weight: bold; color: #555;">0.61 s</td>
-                    <td style="padding: 15px; text-align: center; font-family: 'Consolas', monospace; font-weight: bold; color: #555;">39.14 T/s</td>
-                    <td style="padding: 15px; text-align: center;"><span style="background-color: #fff3cd; color: #856404; padding: 5px 10px; border-radius: 6px; font-weight: bold;">Medio</span><div style="font-size: 0.75em; color: #666; margin-top: 4px;">Latencia Alta</div></td>
+                <tr>
+                    <td style="font-weight: bold; color: #2c3e50;">Qwen 3 VL 4B</td>
+                    <td style="text-align: center;"><span class="mono-data">3.11 GB</span></td>
+                    <td style="text-align: center;"><span class="mono-data">0.61 s</span></td>
+                    <td style="text-align: center;"><span class="mono-data">39.14 T/s</span></td>
+                    <td style="text-align: center;"><span style="background-color: #fff3cd; color: #856404; padding: 5px 10px; border-radius: 6px; font-weight: bold;">Medio</span><div style="font-size: 0.75em; color: #666; margin-top: 4px;">Latencia Alta</div></td>
                 </tr>
-                <tr style="border-bottom: 1px solid #e9ecef;">
-                    <td style="padding: 15px; font-weight: bold; color: #2c3e50;">Granite 4.0 Tiny</td>
-                    <td style="padding: 15px; text-align: center; font-family: 'Consolas', monospace; font-weight: bold; color: #555;">Muy Bajo</td>
-                    <td style="padding: 15px; text-align: center; font-family: 'Consolas', monospace; font-weight: bold; color: #555;">0.16 s</td>
-                    <td style="padding: 15px; text-align: center; font-family: 'Consolas', monospace; font-weight: bold; color: #555;">56.75 T/s</td>
-                    <td style="padding: 15px; text-align: center;"><span style="background-color: #d1ecf1; color: #0c5460; padding: 5px 10px; border-radius: 6px; font-weight: bold;">Muy Bajo</span><div style="font-size: 0.75em; color: #666; margin-top: 4px;">Ultraligero</div></td>
+                <tr>
+                    <td style="font-weight: bold; color: #2c3e50;">Granite 4.0 Tiny</td>
+                    <td style="text-align: center;"><span class="mono-data">Muy Bajo</span></td>
+                    <td style="text-align: center;"><span class="mono-data">0.16 s</span></td>
+                    <td style="text-align: center;"><span class="mono-data">56.75 T/s</span></td>
+                    <td style="text-align: center;"><span style="background-color: #d1ecf1; color: #0c5460; padding: 5px 10px; border-radius: 6px; font-weight: bold;">Muy Bajo</span><div style="font-size: 0.75em; color: #666; margin-top: 4px;">Ultraligero</div></td>
                 </tr>
-                <tr style="border-bottom: 1px solid #e9ecef;">
-                    <td style="padding: 15px; font-weight: bold; color: #2c3e50;">Qwen 3 Thinking</td>
-                    <td style="padding: 15px; text-align: center; font-family: 'Consolas', monospace; font-weight: bold; color: #555;">2.28 GB</td>
-                    <td style="padding: 15px; text-align: center; font-family: 'Consolas', monospace; font-weight: bold; color: #555;">0.19 s</td>
-                    <td style="padding: 15px; text-align: center; font-family: 'Consolas', monospace; font-weight: bold; color: #555;">83.41 T/s</td>
-                    <td style="padding: 15px; text-align: center;"><span style="background-color: #d4edda; color: #155724; padding: 5px 10px; border-radius: 6px; font-weight: bold;">Eficiente</span><div style="font-size: 0.75em; color: #666; margin-top: 4px;">Rendimiento Top</div></td>
+                <tr>
+                    <td style="font-weight: bold; color: #2c3e50;">Qwen 3 Thinking</td>
+                    <td style="text-align: center;"><span class="mono-data">2.28 GB</span></td>
+                    <td style="text-align: center;"><span class="mono-data">0.19 s</span></td>
+                    <td style="text-align: center;"><span class="mono-data">83.41 T/s</span></td>
+                    <td style="text-align: center;"><span style="background-color: #d4edda; color: #155724; padding: 5px 10px; border-radius: 6px; font-weight: bold;">Eficiente</span><div style="font-size: 0.75em; color: #666; margin-top: 4px;">Rendimiento Top</div></td>
                 </tr>
             </tbody>
         </table>
@@ -542,10 +695,43 @@
             }
         });
     </script>
-    <div class="chart-wrapper" style="height: auto; min-height: auto; margin-top: 15px;">
-<fieldset style="width: 100%; box-sizing: border-box; border-top: 1px solid #ccc; border-bottom: none; border-left: none; border-right: none; text-align: center; margin: 20px 0;">
-   <legend style="padding: 0 10px; color: #000000;">Documentación</legend>
-   <p>esta va a ser la documentación del proyecto en el que tenemos que poner lo que diga moaises, que es una comparativa de las ias y cosas varias raras, como que nos han parecido las ias, las complejidades que hemos encontrado, etc</p>
+    <!-- Esta es la parte de la documentación -->
+    <div class="chart-wrapper auto-height" style="margin-top: 15px;" id="zona-documentacion">
+<fieldset style="width: 100%; box-sizing: border-box; border-top: 1px solid #000000; border-bottom: none; border-left: none; border-right: none; text-align: center; margin: 20px 0;">
+   <legend style="padding: 0 10px; color: #000000;">Documentación</legend> 
+   <p style="margin-top: -10px;">He realizado primero las gráficas que engloban los resultados en conjunto de los entornos de Windows y Mac haciendo las medias de las medidas de ambos entornos y lueyo ya he separado las gráficas para que se vean por separado los datos</p>
+    <h3>1. Introducción y Objetivo</h3>
+<p>En este proyecto hemos puesto a prueba la capacidad de inferencia local de varios modelos de Inteligencia Artificial (LLMs) utilizando LM Studio. El objetivo era ver no solo quién responde mejor a acertijos lógicos, sino cómo se comportan el hardware de un PC con Windows frente a un entorno Mac (Silicon).</p>
+<p>Hemos utilizado una batería de 10 acertijos cortos (como el del reloj o la toalla) y 3 problemas de lógica complejos (el acertijo de las tres casas, el cruce del río con el zorro y la gallina, y la isla de los caballeros y embusteros).</p>
+
+<h3>2. Comparativa de entornos: Windows vs Mac</h3>
+<p>Lo primero que salta a la vista en nuestras gráficas es la diferencia de rendimiento bruto.</p>
+<p><strong>Entorno Windows:</strong> Hemos notado que la potencia bruta (probablemente por uso de tarjeta gráfica dedicada) dispara la velocidad de generación. Por ejemplo, el modelo Qwen 3 Thinking alcanzó picos de 101.20 tokens/segundo y Qwen 3 VL llegó a 109.11 tokens/segundo. Es una velocidad muy alta, pero conlleva un consumo de recursos muy alto.</p>
+<p><strong>Entorno Mac:</strong> El entorno Mac se mostró mucho más estable pero limitado en velocidad punta, rondando casi siempre los 34 - 39 tokens/segundo en casi todos los modelos (Granite, Qwen 3 VL, etc.). Parece que la arquitectura de memoria unificada de Apple es muy consistente, pero no tiene el acelerón que vimos en Windows.</p>
+
+<h3>3. Análisis de los modelos: ¿Qué nos han parecido?</h3>
+<p>Tras pelear con las configuraciones y los presets, estas son nuestras conclusiones:</p>
+<p><strong>Qwen 3 Thinking:</strong><br>
+Impresión: En Windows, para responder a la batería de preguntas, generó 14.400 tokens. Entra en bucles de "pensamiento" (Thinking Process) larguísimos antes de dar una respuesta sencilla.<br>
+Veredicto: Es impresionante ver cómo "piensa", pero para producción es inusable por lo mucho que tarda en callarse y darnos la solución.</p>
+<p><strong>Granite 4.0 Tiny:</strong><br>
+Impresión: Es el extremo opuesto de Qwen 3 Thinking. Es rapidísimo (TTFT de 0.16s en Windows), pero sus respuestas son muy cortas.<br>
+Veredicto: Ideal si queremos montar algo que gaste poca memoria RAM y responda al instante, pero no le pidas que te escriba un poema o te explique la lógica del cruce del río con detalle, porque va al grano excesivamente.</p>
+<p><strong>GPT-OSS 20B:</strong><br>
+Impresión: Ha sido el más "cumplidor". En las pruebas de lógica compleja (como la de las casas de colores), fue capaz de deducir correctamente que "Luis vive en la casa verde". Su velocidad es más modesta (~35 t/s en ambos sistemas), pero es el que menos alucinaciones ha tenido.<br>
+Veredicto: Si tuviéramos que elegir uno para un trabajo de clase serio, sería este. Es el más fiable aunque no sea el más rápido.</p>
+<p><strong>Qwen 3 VL 4B:</strong><br>
+Impresión: Es un modelo multimodal ligero. En Mac sufrió un poco más para mantener la coherencia en las respuestas largas, tardando más de 2 minutos en completar algunas tareas.</p>
+
+<h3>4. Complejidades y problemas encontrados</h3>
+<p>Durante el desarrollo, nos hemos topado con varios obstáculos:</p>
+<p>1. <strong>El "Overthinking":</strong> El problema con Qwen 3 Thinking fue que en una de las pruebas, se quedó analizando si una toalla se moja o no, dándole vueltas a conceptos físicos innecesarios en bucle y tuvimos que ajustar los parámetros de Sampling y Temperature (los bajamos a 0.1) para que dejara de divagar.</p>
+<p>2. <strong>Consumo de VRAM:</strong> Cargar el modelo GPT-OSS 20B (que pesa unos 12 GB cuantizado) en local requiere un equipo potente. En el equipo con menos recursos, la generación se volvía eterna.</p>
+<p>3. <strong>Alucinaciones Lógicas:</strong> En el acertijo de la isla de los caballeros y embusteros, algunos modelos se liaban con la doble negación ("Si A fuera caballero..."). Tuvimos que repetir la prueba varias veces porque a veces acertaban de casualidad y otras se inventaban la lógica.</p>
+<p>4. <strong>Diferencia de Hardware:</strong> Sincronizar los resultados entre Windows y Mac fue difícil porque el modelo que en Windows iba muy rápido, en Mac iba muy lento, lo que hacía difícil comparar la eficiencia real.</p>
+
+<h3>5. Conclusión Final</h3>
+<p>Si se busca una velocidad pura y tenemos una buena tarjeta gráfica, Windows con modelos pequeños (Tiny) es imbatible. Si buscamos estabilidad y trabajo en movilidad, el Mac aguanta el tipo muy bien con modelos medianos. Pero hay que tener especial cuidado con los modelos Thinking, ya que consumen demasiados recursos para responder acertijos sencillos.</p>
 </fieldset>
 </body>
 </html>
