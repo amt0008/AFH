@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Documentación de Pre-entrenamiento</title>
+    <style>
+        /* Estilos Generales */
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f0f2f5;
+            color: #333;
+            line-height: 1.6;
+            margin: 0;
+            padding: 20px;
+        }
+
+        /* Contenedor Principal */
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        /* Estilo de las Tarjetas (Divs con bordes redondeados) */
+        .seccion-card {
+            background-color: #ffffff;
+            border-radius: 15px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            padding: 30px;
+            margin-bottom: 25px;
+            overflow: hidden; /* Para asegurar que el contenido respete los bordes */
+        }
+
+        /* Índice */
+        .indice {
+            background-color: #e3f2fd;
+            border-left: 5px solid #2196f3;
+        }
+        
+        .indice h2 {
+            margin-top: 0;
+            color: #0d47a1;
+        }
+
+        .indice ul {
+            list-style-type: none;
+            padding-left: 0;
+        }
+
+        .indice li {
+            margin-bottom: 8px;
+        }
+
+        .indice a {
+            text-decoration: none;
+            color: #1565c0;
+            font-weight: 500;
+            font-size: 1.1em;
+        }
+
+        .indice a:hover {
+            text-decoration: underline;
+        }
+
+        /* Encabezados */
+        h1 {
+            color: #1a237e;
+            border-bottom: 2px solid #eee;
+            padding-bottom: 10px;
+            margin-top: 0;
+        }
+
+        /* Imágenes */
+        img {
+            max-width: 100%;
+            height: auto !important; /* Forzar proporción */
+            border-radius: 8px;
+            margin: 10px 0;
+            display: block;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        /* Estilos originales del código (Adaptados) */
+        .codigo-container {
+            background-color: #002451;
+            padding: 15px;
+            border-radius: 8px;
+            overflow-x: auto; /* Scroll horizontal si el código es largo */
+            font-family: "Courier New", monospace;
+        }
+        
+        .codigo-linea {
+            margin: 0;
+            line-height: 1.4;
+            white-space: pre; /* Respetar espacios del código */
+        }
+
+        /* Colores de sintaxis originales */
+        .c0 { color: #ffffff; }
+        .c1 { color: #bbdaff; }
+        .c2 { text-decoration: none; font-style: normal; }
+        .c4 { color: #d1f1a9; }
+        .c5 { color: #ff9da4; }
+        .c7 { color: #7285b7; }
+        .c9 { color: #ffc58f; }
+        .c10 { color: #99ffff; }
+        .c11 { color: #ffeead; }
+        .c12 { color: #ebbbff; }
+        
+        /* Enlaces */
+        a { color: #1155cc; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+
+    <div class="seccion-card indice">
+        <h2>Índice de Contenidos</h2>
+        <ul>
+            <li><a href="#seccion-1">1. Preparación del entorno</a></li>
+            <li><a href="#seccion-2">2. Pre-entrenamiento de la IA</a></li>
+            <li><a href="#seccion-3">3. Resultados del Pre-entrenamiento</a></li>
+            <li><a href="#seccion-4">4. Scripts usados</a></li>
+        </ul>
+    </div>
+
+    <div class="seccion-card" id="seccion-1">
+        <h1>1. Preparación del entorno</h1>
+        
+        <p>Primero de todo, vamos al proyecto <a href="https://www.gutenberg.org/ebooks/2000">gutenberg</a> y descargamos el archivo del Quijote en texto plano (Plain Text UTF-8).</p>
+        
+        <img src="images/image4.png" alt="Descarga Gutenberg">
+
+        <p>Después, limpiamos el texto para que sea texto puro sin cabeceras ni nada que pueda mandar un fallo a la hora de pre-entrenar a nuestra IA. En nuestro caso, hemos usado un script para que limpie el texto llamado <code>entrenar.py</code> y lo hemos ejecutado.</p>
+
+        <img src="images/image1.png" alt="Ejecución Script Limpieza">
+        <img src="images/image2.png" alt="Archivos resultantes">
+        <img src="images/image7.png" alt="Archivo limpio">
+    </div>
+
+    <div class="seccion-card" id="seccion-2">
+        <h1>2. Pre-entrenamiento de la IA</h1>
+        <p>Entrenamos la IA con el texto que nos ha devuelto el anterior archivo (<code>entrenar.py</code>), que aunque se llamen igual, lo que hice fue cambiar el script dentro del archivo y pondré ambos scripts al final del documento.</p>
+    </div>
+
+    <div class="seccion-card" id="seccion-3">
+        <h1>3. Resultados del Pre-entrenamiento</h1>
+        
+        <img src="images/image3.png" alt="Consola de entrenamiento">
+
+        <p>Una vez que hemos hecho el pre-entrenamiento con el archivo del Quijote ya pulido, vamos a probar a ver si nos dice quiénes son Sancho y Dulcinea. En nuestro caso, nos lo tendrá que dar ya que lo hemos pre-entrenado con la versión completa del Quijote.</p>
+
+        <h3>Prueba 1: ¿Quién es Sancho?</h3>
+        <p>Primero le preguntamos quién es Sancho:</p>
+        <img src="images/image5.png" alt="Resultado Sancho">
+
+        <h3>Prueba 2: ¿Quién es Dulcinea?</h3>
+        <p>Y después, le preguntamos quién es Dulcinea:</p>
+        <img src="images/image6.png" alt="Resultado Dulcinea">
+    </div>
+
+    <div class="seccion-card" id="seccion-4">
+        <h1>4. Scripts usados</h1>
+
+        <h3>A) Destilar.py</h3>
+        <p><em>(Llamado entrenar.py originalmente, pero sirvió para preparar los datos)</em></p>
+        
+        <div class="codigo-container">
+            <p class="codigo-linea"><span class="c12">import</span><span class="c0"> </span><span class="c11">re</span></p>
+            <p class="codigo-linea"><br></p>
+            <p class="codigo-linea"><span class="c12">def</span><span class="c0"> </span><span class="c1">limpiar_y_extraer_texto</span><span class="c0">(</span><span class="c9">ruta_entrada</span><span class="c0">, </span><span class="c9">ruta_salida</span><span class="c0">):</span></p>
+            <p class="codigo-linea"><span class="c0">    </span><span class="c4">"""</span></p>
+            <p class="codigo-linea"><span class="c4">    Lee un archivo de Project Gutenberg, elimina encabezados/pies de página</span></p>
+            <p class="codigo-linea"><span class="c4">    y normaliza el texto para entrenamiento de IA.</span></p>
+            <p class="codigo-linea"><span class="c4">    """</span></p>
+            <p class="codigo-linea"><span class="c0">    </span><span class="c12">try</span><span class="c0">:</span></p>
+            <p class="codigo-linea"><span class="c0">        </span><span class="c7"># 1. Leer el archivo original (codificación utf-8 es estándar para estos archivos)</span></p>
+            <p class="codigo-linea"><span class="c0">        </span><span class="c12">with</span><span class="c0"> </span><span class="c1">open(</span><span class="c9">ruta_entrada</span><span class="c1">, </span><span class="c4">'r'</span><span class="c1">, </span><span class="c9">encoding</span><span class="c10">=</span><span class="c4">'utf-8'</span><span class="c1">)</span><span class="c0"> </span><span class="c12">as</span><span class="c0"> </span><span class="c5">f</span><span class="c0">:</span></p>
+            <p class="codigo-linea"><span class="c0">            </span><span class="c5">texto_crudo</span><span class="c0"> </span><span class="c10">=</span><span class="c0"> </span><span class="c5">f</span><span class="c0">.</span><span class="c1">read()</span></p>
+            <p class="codigo-linea"><br></p>
+            <p class="codigo-linea"><span class="c0">        </span><span class="c1">print(</span><span class="c12">f</span><span class="c4">"Leídos </span><span class="c9">{</span><span class="c1">len(</span><span class="c5">texto_crudo</span><span class="c1">)</span><span class="c9">}</span><span class="c4"> caracteres de </span><span class="c9">{ruta_entrada}</span><span class="c4">."</span><span class="c1">)</span></p>
+            <p class="codigo-linea"><br></p>
+            <p class="codigo-linea"><span class="c0">        </span><span class="c7"># 2. Definir marcadores de Project Gutenberg para cortar el texto</span></p>
+            <p class="codigo-linea"><span class="c0">        </span><span class="c5">marcador_inicio</span><span class="c0"> </span><span class="c10">=</span><span class="c0"> </span><span class="c12">r</span><span class="c5">"\*\*\* START OF THE PROJECT GUTENBERG EBOOK DON QUIJOTE \*\*\*"</span></p>
+            <p class="codigo-linea"><span class="c0">        </span><span class="c5">marcador_fin</span><span class="c0"> </span><span class="c10">=</span><span class="c0"> </span><span class="c12">r</span><span class="c5">"\*\*\* END OF THE PROJECT GUTENBERG EBOOK"</span></p>
+            <p class="codigo-linea"><br></p>
+            <p class="codigo-linea"><span class="c0">        </span><span class="c5">inicio</span><span class="c0"> </span><span class="c10">=</span><span class="c0"> </span><span class="c11">re</span><span class="c0">.</span><span class="c1">search(</span><span class="c5">marcador_inicio</span><span class="c1">, </span><span class="c5">texto_crudo</span><span class="c1">)</span></p>
+            <p class="codigo-linea"><span class="c0">        </span><span class="c5">fin</span><span class="c0"> </span><span class="c10">=</span><span class="c0"> </span><span class="c11">re</span><span class="c0">.</span><span class="c1">search(</span><span class="c5">marcador_fin</span><span class="c1">, </span><span class="c5">texto_crudo</span><span class="c1">)</span></p>
+            <p class="codigo-linea"><br></p>
+            <p class="codigo-linea"><span class="c0">        </span><span class="c12">if</span><span class="c0"> </span><span class="c10">not</span><span class="c0"> </span><span class="c5">inicio</span><span class="c0">:</span></p>
+            <p class="codigo-linea"><span class="c0">            </span><span class="c1">print(</span><span class="c4">"ADVERTENCIA: No se encontró el marcador de inicio."</span><span class="c1">)</span></p>
+            <p class="codigo-linea"><span class="c0">            </span><span class="c5">idx_inicio</span><span class="c0"> </span><span class="c10">=</span><span class="c0"> </span><span class="c9">0</span></p>
+            <p class="codigo-linea"><span class="c0">        </span><span class="c12">else</span><span class="c0">:</span></p>
+            <p class="codigo-linea"><span class="c0">            </span><span class="c5">idx_inicio</span><span class="c0"> </span><span class="c10">=</span><span class="c0"> </span><span class="c5">inicio</span><span class="c0">.</span><span class="c1">end()</span></p>
+            <p class="codigo-linea"><br></p>
+            <p class="codigo-linea"><span class="c0">        </span><span class="c12">if</span><span class="c0"> </span><span class="c10">not</span><span class="c0"> </span><span class="c5">fin</span><span class="c0">:</span></p>
+            <p class="codigo-linea"><span class="c0">            </span><span class="c1">print(</span><span class="c4">"ADVERTENCIA: No se encontró el marcador de fin."</span><span class="c1">)</span></p>
+            <p class="codigo-linea"><span class="c0">            </span><span class="c5">idx_fin</span><span class="c0"> </span><span class="c10">=</span><span class="c0"> </span><span class="c1">len(</span><span class="c5">texto_crudo</span><span class="c1">)</span></p>
+            <p class="codigo-linea"><span class="c0">        </span><span class="c12">else</span><span class="c0">:</span></p>
+            <p class="codigo-linea"><span class="c0">            </span><span class="c5">idx_fin</span><span class="c0"> </span><span class="c10">=</span><span class="c0"> </span><span class="c5">fin</span><span class="c0">.</span><span class="c1">start()</span></p>
+            <p class="codigo-linea"><br></p>
+            <p class="codigo-linea"><span class="c0">        </span><span class="c5">contenido_novela</span><span class="c0"> </span><span class="c10">=</span><span class="c0"> </span><span class="c5">texto_crudo</span><span class="c0">[</span><span class="c5">idx_inicio</span><span class="c0">:</span><span class="c5">idx_fin</span><span class="c0">]</span></p>
+            <p class="codigo-linea"><span class="c0">        </span><span class="c5">contenido_novela</span><span class="c0"> </span><span class="c10">=</span><span class="c0"> </span><span class="c5">contenido_novela</span><span class="c0">.</span><span class="c1">strip()</span></p>
+            <p class="codigo-linea"><span class="c0">        </span><span class="c5">contenido_novela</span><span class="c0"> </span><span class="c10">=</span><span class="c0"> </span><span class="c11">re</span><span class="c0">.</span><span class="c1">sub(</span><span class="c12">r</span><span class="c5">'</span><span class="c9">\n</span><span class="c10">{3,}</span><span class="c5">'</span><span class="c1">, </span><span class="c4">'</span><span class="c9">\n\n</span><span class="c4">'</span><span class="c1">, </span><span class="c5">contenido_novela</span><span class="c1">)</span></p>
+            <p class="codigo-linea"><br></p>
+            <p class="codigo-linea"><span class="c0">        </span><span class="c12">with</span><span class="c0"> </span><span class="c1">open(</span><span class="c9">ruta_salida</span><span class="c1">, </span><span class="c4">'w'</span><span class="c1">, </span><span class="c9">encoding</span><span class="c10">=</span><span class="c4">'utf-8'</span><span class="c1">)</span><span class="c0"> </span><span class="c12">as</span><span class="c0"> </span><span class="c5">f</span><span class="c0">:</span></p>
+            <p class="codigo-linea"><span class="c0">            </span><span class="c5">f</span><span class="c0">.</span><span class="c1">write(</span><span class="c5">contenido_novela</span><span class="c1">)</span></p>
+            <p class="codigo-linea"><span class="c0">    </span><span class="c12">except</span><span class="c0"> </span><span class="c11">Exception</span><span class="c0"> </span><span class="c12">as</span><span class="c0"> </span><span class="c5">e</span><span class="c0">:</span></p>
+            <p class="codigo-linea"><span class="c0">        </span><span class="c1">print(</span><span class="c12">f</span><span class="c4">"Ocurrió un error inesperado: </span><span class="c9">{</span><span class="c5">e</span><span class="c9">}</span><span class="c4">"</span><span class="c1">)</span></p>
+            <p class="codigo-linea"><br></p>
+            <p class="codigo-linea"><span class="c12">if</span><span class="c0"> </span><span class="c5">__name__</span><span class="c0"> </span><span class="c10">==</span><span class="c0"> </span><span class="c4">"__main__"</span><span class="c0">:</span></p>
+            <p class="codigo-linea"><span class="c0">    </span><span class="c1">limpiar_y_extraer_texto(</span><span class="c4">"pg2000.txt"</span><span class="c1">, </span><span class="c4">"don_quijote_limpio.txt"</span><span class="c1">)</span></p>
+        </div>
+
+        <h3>B) Entrenar.py</h3>
+        <p><em>(Script para realizar el pre-entrenamiento)</em></p>
+
+        <div class="codigo-container">
+            <p class="codigo-linea"><span class="c12">import</span><span class="c0"> os</span></p>
+            <p class="codigo-linea"><span class="c12">import</span><span class="c0"> sys</span></p>
+            <p class="codigo-linea"><span class="c12">import</span><span class="c0"> transformers</span></p>
+            <p class="codigo-linea"><span class="c12">import</span><span class="c0"> accelerate</span></p>
+            <p class="codigo-linea"><br></p>
+            <p class="codigo-linea"><span class="c7"># --- VERIFICACIÓN DE SEGURIDAD ---</span></p>
+            <p class="codigo-linea"><span class="c1">print(</span><span class="c12">f</span><span class="c4">"Versiones: Transformers </span><span class="c9">{</span><span class="c1">transformers.__version__</span><span class="c9">}</span><span class="c4"> | Accelerate </span><span class="c9">{</span><span class="c1">accelerate.__version__</span><span class="c9">}</span><span class="c4">"</span><span class="c1">)</span></p>
+            <p class="codigo-linea"><br></p>
+            <p class="codigo-linea"><span class="c12">from</span><span class="c0"> transformers </span><span class="c12">import</span><span class="c0"> TextDataset, DataCollatorForLanguageModeling</span></p>
+            <p class="codigo-linea"><span class="c12">from</span><span class="c0"> transformers </span><span class="c12">import</span><span class="c0"> Trainer, TrainingArguments, AutoTokenizer, AutoModelForCausalLM</span></p>
+            <p class="codigo-linea"><br></p>
+            <p class="codigo-linea"><span class="c12">def</span><span class="c0"> </span><span class="c1">entrenar</span><span class="c0">():</span></p>
+            <p class="codigo-linea"><span class="c0">    </span><span class="c7"># 1. Configuración</span></p>
+            <p class="codigo-linea"><span class="c0">    nombre_modelo_base </span><span class="c10">=</span><span class="c0"> </span><span class="c4">"DeepESP/gpt2-spanish"</span></p>
+            <p class="codigo-linea"><span class="c0">    archivo_entrenamiento </span><span class="c10">=</span><span class="c0"> </span><span class="c4">"don_quijote_limpio.txt"</span></p>
+            <p class="codigo-linea"><span class="c0">    carpeta_salida </span><span class="c10">=</span><span class="c0"> </span><span class="c4">"./modelo_quijote_entrenado"</span></p>
+            <p class="codigo-linea"><br></p>
+            <p class="codigo-linea"><span class="c0">    </span><span class="c1">print(</span><span class="c12">f</span><span class="c4">"--- Cargando modelo base: </span><span class="c9">{</span><span class="c1">nombre_modelo_base</span><span class="c9">}</span><span class="c4"> ---"</span><span class="c1">)</span></p>
+            <p class="codigo-linea"><span class="c0">    tokenizer </span><span class="c10">=</span><span class="c0"> AutoTokenizer.</span><span class="c1">from_pretrained(nombre_modelo_base)</span></p>
+            <p class="codigo-linea"><span class="c0">    model </span><span class="c10">=</span><span class="c0"> AutoModelForCausalLM.</span><span class="c1">from_pretrained(nombre_modelo_base)</span></p>
+            <p class="codigo-linea"><br></p>
+            <p class="codigo-linea"><span class="c0">    </span><span class="c1">print(</span><span class="c4">"--- Procesando el texto de Don Quijote ---"</span><span class="c1">)</span></p>
+            <p class="codigo-linea"><span class="c0">    </span><span class="c12">if</span><span class="c0"> os.path.</span><span class="c1">exists(archivo_entrenamiento)</span><span class="c0">:</span></p>
+            <p class="codigo-linea"><span class="c0">        dataset </span><span class="c10">=</span><span class="c0"> </span><span class="c1">TextDataset(</span></p>
+            <p class="codigo-linea"><span class="c1">            </span><span class="c9">tokenizer</span><span class="c10">=</span><span class="c1">tokenizer,</span></p>
+            <p class="codigo-linea"><span class="c1">            </span><span class="c9">file_path</span><span class="c10">=</span><span class="c1">archivo_entrenamiento,</span></p>
+            <p class="codigo-linea"><span class="c1">            </span><span class="c9">block_size</span><span class="c10">=</span><span class="c9">128</span><span class="c1">,</span></p>
+            <p class="codigo-linea"><span class="c1">            </span><span class="c9">overwrite_cache</span><span class="c10">=</span><span class="c9">True</span></p>
+            <p class="codigo-linea"><span class="c1">        )</span></p>
+            <p class="codigo-linea"><span class="c0">    </span><span class="c12">else</span><span class="c0">:</span></p>
+            <p class="codigo-linea"><span class="c0">        </span><span class="c1">print(</span><span class="c12">f</span><span class="c4">"ERROR: No encuentro el archivo '</span><span class="c9">{</span><span class="c1">archivo_entrenamiento</span><span class="c9">}</span><span class="c4">'"</span><span class="c1">)</span></p>
+            <p class="codigo-linea"><span class="c0">        </span><span class="c12">return</span></p>
+            <p class="codigo-linea"><br></p>
+            <p class="codigo-linea"><span class="c0">    data_collator </span><span class="c10">=</span><span class="c0"> </span><span class="c1">DataCollatorForLanguageModeling(</span></p>
+            <p class="codigo-linea"><span class="c1">        </span><span class="c9">tokenizer</span><span class="c10">=</span><span class="c1">tokenizer, </span><span class="c9">mlm</span><span class="c10">=</span><span class="c9">False</span></p>
+            <p class="codigo-linea"><span class="c1">    )</span></p>
+            <p class="codigo-linea"><br></p>
+            <p class="codigo-linea"><span class="c0">    </span><span class="c7"># 2. Configuración del entrenamiento</span></p>
+            <p class="codigo-linea"><span class="c0">    training_args </span><span class="c10">=</span><span class="c0"> </span><span class="c1">TrainingArguments(</span></p>
+            <p class="codigo-linea"><span class="c1">        </span><span class="c9">output_dir</span><span class="c10">=</span><span class="c1">carpeta_salida,</span></p>
+            <p class="codigo-linea"><span class="c1">        </span><span class="c9">overwrite_output_dir</span><span class="c10">=</span><span class="c9">True</span><span class="c1">,</span></p>
+            <p class="codigo-linea"><span class="c1">        </span><span class="c9">num_train_epochs</span><span class="c10">=</span><span class="c9">3</span><span class="c1">,</span></p>
+            <p class="codigo-linea"><span class="c1">        </span><span class="c9">per_device_train_batch_size</span><span class="c10">=</span><span class="c9">2</span><span class="c1">,</span></p>
+            <p class="codigo-linea"><span class="c1">        </span><span class="c9">save_steps</span><span class="c10">=</span><span class="c9">500</span><span class="c1">,</span></p>
+            <p class="codigo-linea"><span class="c1">        </span><span class="c9">save_total_limit</span><span class="c10">=</span><span class="c9">2</span><span class="c1">,</span></p>
+            <p class="codigo-linea"><span class="c1">        </span><span class="c9">prediction_loss_only</span><span class="c10">=</span><span class="c9">True</span></p>
+            <p class="codigo-linea"><span class="c1">    )</span></p>
+            <p class="codigo-linea"><br></p>
+            <p class="codigo-linea"><span class="c0">    trainer </span><span class="c10">=</span><span class="c0"> </span><span class="c1">Trainer(</span></p>
+            <p class="codigo-linea"><span class="c1">        </span><span class="c9">model</span><span class="c10">=</span><span class="c1">model,</span></p>
+            <p class="codigo-linea"><span class="c1">        </span><span class="c9">args</span><span class="c10">=</span><span class="c1">training_args,</span></p>
+            <p class="codigo-linea"><span class="c1">        </span><span class="c9">data_collator</span><span class="c10">=</span><span class="c1">data_collator,</span></p>
+            <p class="codigo-linea"><span class="c1">        </span><span class="c9">train_dataset</span><span class="c10">=</span><span class="c1">dataset</span></p>
+            <p class="codigo-linea"><span class="c1">    )</span></p>
+            <p class="codigo-linea"><br></p>
+            <p class="codigo-linea"><span class="c0">    </span><span class="c7"># 3. Entrenar</span></p>
+            <p class="codigo-linea"><span class="c0">    </span><span class="c1">print(</span><span class="c4">"--- INICIANDO ENTRENAMIENTO ---"</span><span class="c1">)</span></p>
+            <p class="codigo-linea"><span class="c0">    trainer.</span><span class="c1">train()</span></p>
+            <p class="codigo-linea"><br></p>
+            <p class="codigo-linea"><span class="c0">    </span><span class="c7"># 4. Guardar</span></p>
+            <p class="codigo-linea"><span class="c0">    </span><span class="c1">print(</span><span class="c4">"--- Guardando el nuevo cerebro ---"</span><span class="c1">)</span></p>
+            <p class="codigo-linea"><span class="c0">    model.</span><span class="c1">save_pretrained(carpeta_salida)</span></p>
+            <p class="codigo-linea"><span class="c0">    tokenizer.</span><span class="c1">save_pretrained(carpeta_salida)</span></p>
+            <p class="codigo-linea"><span class="c0">    </span><span class="c1">print(</span><span class="c12">f</span><span class="c4">"¡Listo! Modelo guardado en: </span><span class="c9">{</span><span class="c1">carpeta_salida</span><span class="c9">}</span><span class="c4">"</span><span class="c1">)</span></p>
+            <p class="codigo-linea"><br></p>
+            <p class="codigo-linea"><span class="c12">if</span><span class="c0"> </span><span class="c5">__name__</span><span class="c0"> </span><span class="c10">==</span><span class="c0"> </span><span class="c4">"__main__"</span><span class="c0">:</span></p>
+            <p class="codigo-linea"><span class="c0">    </span><span class="c1">entrenar()</span></p>
+        </div>
+
+        <h3>C) Prueba.py</h3>
+        <p><em>(Script para verificar el entrenamiento)</em></p>
+
+        <div class="codigo-container">
+            <p class="codigo-linea"><span class="c12">from</span><span class="c0"> transformers </span><span class="c12">import</span><span class="c0"> AutoTokenizer, AutoModelForCausalLM</span></p>
+            <p class="codigo-linea"><span class="c12">import</span><span class="c0"> torch</span></p>
+            <p class="codigo-linea"><br></p>
+            <p class="codigo-linea"><span class="c7"># Cargar el modelo que acabamos de entrenar</span></p>
+            <p class="codigo-linea"><span class="c0">ruta_modelo </span><span class="c10">=</span><span class="c0"> </span><span class="c4">"./modelo_quijote_entrenado"</span></p>
+            <p class="codigo-linea"><br></p>
+            <p class="codigo-linea"><span class="c1">print(</span><span class="c4">"Cargando modelo..."</span><span class="c1">)</span></p>
+            <p class="codigo-linea"><span class="c0">tokenizer </span><span class="c10">=</span><span class="c0"> AutoTokenizer.</span><span class="c1">from_pretrained(ruta_modelo)</span></p>
+            <p class="codigo-linea"><span class="c0">model </span><span class="c10">=</span><span class="c0"> AutoModelForCausalLM.</span><span class="c1">from_pretrained(ruta_modelo)</span></p>
+            <p class="codigo-linea"><br></p>
+            <p class="codigo-linea"><span class="c12">while</span><span class="c0"> </span><span class="c9">True</span><span class="c0">:</span></p>
+            <p class="codigo-linea"><span class="c0">    entrada </span><span class="c10">=</span><span class="c0"> </span><span class="c1">input(</span><span class="c4">"Escribe el inicio de una frase (o 'salir'): "</span><span class="c1">)</span></p>
+            <p class="codigo-linea"><span class="c0">    </span><span class="c12">if</span><span class="c0"> entrada.</span><span class="c1">lower()</span><span class="c0"> </span><span class="c10">==</span><span class="c0"> </span><span class="c4">'salir'</span><span class="c0">:</span></p>
+            <p class="codigo-linea"><span class="c0">        </span><span class="c12">break</span></p>
+            <p class="codigo-linea"><br></p>
+            <p class="codigo-linea"><span class="c0">    input_ids </span><span class="c10">=</span><span class="c0"> tokenizer.</span><span class="c1">encode(entrada, return_tensors=</span><span class="c4">'pt'</span><span class="c1">)</span></p>
+            <p class="codigo-linea"><br></p>
+            <p class="codigo-linea"><span class="c0">    </span><span class="c7"># Generar texto</span></p>
+            <p class="codigo-linea"><span class="c0">    output </span><span class="c10">=</span><span class="c0"> model.</span><span class="c1">generate(</span></p>
+            <p class="codigo-linea"><span class="c0">        input_ids,</span></p>
+            <p class="codigo-linea"><span class="c0">        max_length</span><span class="c10">=</span><span class="c9">100</span><span class="c0">,</span></p>
+            <p class="codigo-linea"><span class="c0">        num_return_sequences</span><span class="c10">=</span><span class="c9">1</span><span class="c0">,</span></p>
+            <p class="codigo-linea"><span class="c0">        pad_token_id</span><span class="c10">=</span><span class="c9">50256</span></p>
+            <p class="codigo-linea"><span class="c0">    )</span></p>
+            <p class="codigo-linea"><br></p>
+            <p class="codigo-linea"><span class="c0">    </span><span class="c1">print(</span><span class="c4">"\n--- LA IA DICE: ---"</span><span class="c1">)</span></p>
+            <p class="codigo-linea"><span class="c0">    </span><span class="c1">print(tokenizer.decode(output[</span><span class="c9">0</span><span class="c1">], skip_special_tokens=</span><span class="c9">True</span><span class="c1">))</span></p>
+            <p class="codigo-linea"><span class="c0">    </span><span class="c1">print(</span><span class="c4">"-------------------\n"</span><span class="c1">)</span></p>
+        </div>
+    </div>
+
+</div>
+
+</body>
+</html>
