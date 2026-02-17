@@ -1,0 +1,444 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Destilación de IA</title>
+    <style>
+        /* --- ESTILOS GENERALES --- */
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f0f2f5;
+            color: #333;
+            line-height: 1.6;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        /* --- CONTENEDOR PRINCIPAL --- */
+        .main-container {
+            width: 100%;
+            max-width: 900px;
+        }
+
+        /* --- ESTILO DE LAS TARJETAS (DIVS) --- */
+        .tarjeta {
+            background-color: #ffffff;
+            border-radius: 20px; /* Bordes redondeados */
+            padding: 40px;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.05); /* Sombra suave */
+            border: 1px solid #e1e4e8;
+            transition: transform 0.2s ease;
+        }
+
+        .tarjeta:hover {
+            transform: translateY(-2px); /* Efecto leve al pasar el ratón */
+        }
+
+        /* --- TIPOGRAFÍA --- */
+        h1, h2, h3 {
+            color: #2c3e50;
+            margin-top: 0;
+        }
+
+        h1 { font-size: 2.2em; text-align: center; color: #1a73e8; }
+        h2 { font-size: 1.8em; border-bottom: 2px solid #f0f2f5; padding-bottom: 10px; margin-bottom: 20px; }
+        h3 { font-size: 1.4em; color: #444; margin-top: 25px; }
+
+        p { margin-bottom: 15px; text-align: justify; }
+
+        /* --- IMÁGENES --- */
+        img {
+            max-width: 100%;
+            height: auto;
+            display: block;
+            margin: 20px auto;
+            border-radius: 12px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        }
+
+        /* --- ÍNDICE --- */
+        .indice ul {
+            list-style: none;
+            padding: 0;
+        }
+        .indice li {
+            margin-bottom: 10px;
+        }
+        .indice a {
+            text-decoration: none;
+            color: #1a73e8;
+            font-weight: 500;
+            font-size: 1.1em;
+            display: block;
+            padding: 10px;
+            background: #f8f9fa;
+            border-radius: 8px;
+            transition: background 0.2s;
+        }
+        .indice a:hover {
+            background: #e8f0fe;
+        }
+
+        /* --- BLOQUES DE CÓDIGO (Para tus scripts) --- */
+        .code-block {
+            background-color: #282c34;
+            color: #abb2bf;
+            padding: 20px;
+            border-radius: 10px;
+            font-family: 'Consolas', 'Monaco', monospace;
+            font-size: 0.9em;
+            overflow-x: auto;
+            margin: 20px 0;
+            white-space: pre-wrap; /* Mantiene saltos de línea */
+        }
+        .code-keyword { color: #c678dd; } /* Morado para keywords */
+        .code-string { color: #98c379; }  /* Verde para texto */
+        .code-comment { color: #5c6370; font-style: italic; } /* Gris para comentarios */
+
+        /* --- TABLAS --- */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+        th, td {
+            padding: 15px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        th {
+            background-color: #1a73e8;
+            color: white;
+        }
+        tr:last-child td { border-bottom: none; }
+
+        /* --- CRÉDITOS --- */
+        .author {
+            text-align: center;
+            font-size: 1.2em;
+            color: #666;
+            margin-bottom: 30px;
+        }
+
+        /* --- LISTAS --- */
+        ul.normal-list {
+            padding-left: 20px;
+        }
+        ul.normal-list li {
+            margin-bottom: 8px;
+        }
+
+        /* --- PREGUNTAS Y RESPUESTAS --- */
+        .qa-box {
+            background: #f9f9f9;
+            border-left: 4px solid #1a73e8;
+            padding: 15px;
+            margin-bottom: 15px;
+            border-radius: 0 10px 10px 0;
+        }
+        .qa-question {
+            font-weight: bold;
+            color: #2c3e50;
+            display: block;
+            margin-bottom: 5px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="main-container">
+
+        <div class="tarjeta">
+            <h1>DESTILACIÓN DE IA</h1>
+            <img src="images/image4.png" alt="Imagen Portada">
+        </div>
+
+        <div class="tarjeta indice" id="indice">
+            <h2>Índice</h2>
+            <ul>
+                <li><a href="#intro">1. Introducción</a></li>
+                <li><a href="#que-es">2. ¿Qué es la destilación de modelos?</a></li>
+                <li><a href="#modelos">3. ¿Qué modelos usamos?</a></li>
+                <li><a href="#entrenamiento">4. Cómo entrenamos el modelo destilado</a></li>
+                <li><a href="#diferencias">5. Diferencias Teacher vs Student</a></li>
+                <li><a href="#mas-tonto">6. ¿Por qué el modelo destilado es más tonto?</a></li>
+                <li><a href="#lm-studio">7. Cargar modelo en LM Studio (GGUF)</a></li>
+                <li><a href="#metricas">8. Medición (KL Divergence & Perplexity)</a></li>
+                <li><a href="#acertijos">9. Pila de acertijos</a></li>
+                <li><a href="#graficas">10. Gráficas</a></li>
+                <li><a href="#conclusion">11. Conclusión</a></li>
+            </ul>
+        </div>
+
+        <div class="tarjeta" id="intro">
+            <h2>Introducción</h2>
+            <p>En los últimos años, los modelos de lenguaje de gran tamaño han demostrado un rendimiento sobresaliente en tareas de comprensión, generación y razonamiento. Sin embargo, su elevado coste computacional dificulta su uso en entornos con recursos limitados o en aplicaciones que requieren respuestas rápidas. En este contexto surge la destilación de modelos (<em>knowledge distillation</em>), una técnica que permite transferir el comportamiento de un modelo grande (teacher) a uno más pequeño (student), reduciendo su tamaño y acelerando su ejecución sin necesidad de reentrenar desde cero.</p>
+            <p>El objetivo de este trabajo es analizar de forma práctica el proceso de destilación y evaluar su impacto tanto en la precisión como en la velocidad de generación. Para ello se han comparado dos modelos: un modelo base de mayor capacidad (GPT‑Medium) y un modelo reducido obtenido mediante destilación (GPT‑Small). La evaluación se ha realizado mediante un conjunto de preguntas técnicas relacionadas con el aprendizaje automático, así como mediante la medición de <em>tokens por segundo</em> como indicador de eficiencia.</p>
+        </div>
+
+        <div class="tarjeta" id="que-es">
+            <h2>¿Qué es la destilación de modelos?</h2>
+            <p>La destilación de modelos (knowledge distillation) es una técnica utilizada en aprendizaje automático para transferir el conocimiento de un modelo grande y preciso (teacher) a un modelo más pequeño y eficiente (student).</p>
+            <p>El proceso consiste en entrenar el modelo pequeño para que imite las salidas del modelo grande, no solo las etiquetas reales. De esta forma, el student aprende patrones, relaciones y comportamientos que el teacher ya ha capturado, pero con un coste computacional mucho menor.</p>
+            <h3>La destilación permite:</h3>
+            <ul class="normal-list">
+                <li>Reducir el tamaño del modelo.</li>
+                <li>Acelerar la generación de texto.</li>
+                <li>Disminuir el consumo de memoria.</li>
+                <li>Mantener un rendimiento razonablemente cercano al modelo original.</li>
+            </ul>
+        </div>
+
+        <div class="tarjeta" id="modelos">
+            <h2>¿Qué modelos usamos?</h2>
+            <p>En este trabajo se utilizaron dos modelos de lenguaje con distinta capacidad y propósito:</p>
+            
+            <h3>GPT‑Medium (Teacher)</h3>
+            <p>Es el modelo de mayor tamaño y precisión. Se utiliza como referencia porque ofrece respuestas más completas y coherentes. Su función en el proyecto es actuar como modelo maestro del cual se extrae el conocimiento.</p>
+            <ul class="normal-list">
+                <li>Mayor número de parámetros.</li>
+                <li>Mayor precisión en tareas técnicas.</li>
+                <li>Menor velocidad de generación.</li>
+            </ul>
+
+            <h3>GPT‑Small (Student destilado)</h3>
+            <p>Es el modelo reducido obtenido mediante destilación. Su objetivo es imitar el comportamiento del teacher, pero con un coste computacional mucho menor.</p>
+            <ul class="normal-list">
+                <li>Menos parámetros.</li>
+                <li>Menor precisión.</li>
+                <li>Mucha mayor velocidad de generación.</li>
+            </ul>
+        </div>
+
+        <div class="tarjeta" id="entrenamiento">
+            <h2>Cómo entrenamos el modelo destilado</h2>
+            <p>Empezaremos instalando las librerías habiendo descargado previamente Python.</p>
+            <img src="images/image15.png" alt="Instalación librerías">
+            <img src="images/image11.png" alt="Actualizar PIP">
+            
+            <p>Crearemos el archivo de destilación <code>destilar.py</code>. Hubo varios problemas con versiones nuevas de Python, pero esta es la versión final funcional:</p>
+
+            <div class="code-block">
+from transformers import AutoModelForCausalLM, AutoTokenizer
+from datasets import load_dataset
+import torch
+import torch.nn.functional as F
+from transformers import Trainer, TrainingArguments
+
+# 1. Cargar modelos
+teacher = AutoModelForCausalLM.from_pretrained("gpt2-medium")
+student = AutoModelForCausalLM.from_pretrained("gpt2")
+tokenizer = AutoTokenizer.from_pretrained("gpt2")
+tokenizer.pad_token = tokenizer.eos_token 
+
+# 2. Cargar dataset limpio (AG News)
+dataset = load_dataset("ag_news")
+# Reducir dataset a 5000 ejemplos (MUY IMPORTANTE PARA CPU)
+dataset["train"] = dataset["train"].select(range(5000))
+
+# 3. Preparar texto
+def preparar(batch):
+    texto = batch["text"]
+    if not isinstance(texto, str):
+        texto = str(texto)
+    texto = texto.strip()
+    return {"text": texto if texto else " "}
+
+dataset = dataset.map(preparar)
+
+# 4. Tokenizar dataset
+def tokenize(batch):
+    tokens = tokenizer(
+        batch["text"],
+        truncation=True,
+        padding="max_length",
+        max_length=128
+    )
+    if "labels" in tokens: del tokens["labels"]
+    return tokens
+
+tokenized = dataset.map(tokenize, batched=True)
+
+# 5. Trainer personalizado para distilación
+class DistillationTrainer(Trainer):
+    def compute_loss(self, model, inputs, return_outputs=False, **kwargs):
+        if "labels" in inputs: del inputs["labels"]
+        outputs_student = model(**inputs)
+        logits_student = outputs_student.logits
+
+        with torch.no_grad():
+            outputs_teacher = teacher(**inputs)
+            logits_teacher = outputs_teacher.logits
+
+        loss = F.kl_div(
+            logits_student.log_softmax(dim=-1),
+            logits_teacher.softmax(dim=-1),
+            reduction="batchmean"
+        )
+        return (loss, outputs_student) if return_outputs else loss
+
+# 6. Configuración y Entrenamiento
+training_args = TrainingArguments(
+    output_dir="./destilado",
+    per_device_train_batch_size=2,
+    num_train_epochs=1,
+    logging_steps=50,
+)
+trainer = DistillationTrainer(
+    model=student,
+    args=training_args,
+    train_dataset=tokenized["train"],
+)
+
+trainer.train()
+student.save_pretrained("mi_modelo_destilado")
+tokenizer.save_pretrained("mi_modelo_destilado")
+            </div>
+
+            <p>Proceso de entrenamiento:</p>
+            <img src="images/image8.png" alt="Proceso entrenamiento">
+            <p>Nos vimos obligados a bajar los ejemplos a 5000 para no sobrecargar el tiempo de cómputo.</p>
+            <img src="images/image16.png" alt="Dataset reducido">
+            <p>Finalización del entrenamiento:</p>
+            <img src="images/image10.png" alt="Fin entrenamiento">
+        </div>
+
+        <div class="tarjeta" id="diferencias">
+            <h2>Diferencias entre el profesor y el estudiante</h2>
+            <p>La diferencia fundamental entre ambos modelos está en su capacidad, tamaño y objetivo. Aunque comparten arquitectura, no juegan el mismo papel.</p>
+            
+            <p><strong>Modelo Teacher (GPT‑Medium):</strong> Tiene más parámetros (355M) y capacidad de representación. Produce respuestas más precisas pero requiere más recursos.</p>
+            
+            <p><strong>Modelo Student (GPT‑Small):</strong> Tiene menos parámetros (124M). Es mucho más rápido generando texto y consume menos memoria, aunque su precisión es inferior.</p>
+            
+            <p>En resumen: el teacher es más inteligente pero más lento; el student es más rápido pero menos preciso.</p>
+        </div>
+
+        <div class="tarjeta" id="mas-tonto">
+            <h2>¿Por qué el modelo destilado es más "tonto"?</h2>
+            <ul class="normal-list">
+                <li><strong>Menos parámetros:</strong> Menos capacidad de aprendizaje (como comparar un libro de 500 páginas con un resumen de 80).</li>
+                <li><strong>Imitación vs Inteligencia:</strong> El student aprende a imitar salidas, no el razonamiento interno completo.</li>
+                <li><strong>Generalización:</strong> Tiende a simplificar demasiado o cometer errores conceptuales.</li>
+                <li><strong>Velocidad vs Precisión:</strong> La destilación prioriza la eficiencia sobre la calidad absoluta.</li>
+            </ul>
+        </div>
+
+        <div class="tarjeta" id="lm-studio">
+            <h2>Cargar modelo en LM Studio (HuggingFace → GGUF)</h2>
+            <p>Para usarlo en LM Studio, convertimos el modelo a formato GGUF usando <code>llama.cpp</code>.</p>
+            <img src="images/image13.png" alt="Github Llama.cpp">
+            <img src="images/image9.png" alt="Archivos carpeta">
+            
+            <p>Comando ejecutado:</p>
+            <div class="code-block">python .\convert_hf_to_gguf.py "C:\Users\Izan\mi_modelo_destilado" --outfile "C:\Users\Izan\mi_modelo_destilado.gguf"</div>
+            
+            <img src="images/image3.png" alt="Consola conversión">
+            <p>Modelo cargado en LM Studio:</p>
+            <img src="images/image7.png" alt="LM Studio">
+        </div>
+
+        <div class="tarjeta" id="metricas">
+            <h2>Medición: Divergencia KL y Perplexity</h2>
+            <p>Usamos un script para medir qué tan bien imita el estudiante al maestro.</p>
+            
+            <div class="code-block">
+# Fragmento del script de medición
+def calcular_kl(texto):
+    # ... código de tokenización ...
+    kl = F.kl_div(
+        logits_student.log_softmax(dim=-1),
+        logits_teacher.softmax(dim=-1),
+        reduction="batchmean"
+    )
+    return kl.item()
+            </div>
+
+            <img src="images/image1.png" alt="Resultado KL">
+            <p><strong>Resultado KL Divergence:</strong> 24.98. Indica que el modelo pequeño se desvía bastante del comportamiento del grande (ha perdido capacidad).</p>
+
+            <h3>Perplexity (Capacidad de predicción)</h3>
+            <p>El modelo destilado obtuvo una Perplexity promedio de <strong>62.1</strong>.</p>
+            
+            <table>
+                <tr>
+                    <th>Perplexity</th>
+                    <th>Interpretación</th>
+                </tr>
+                <tr>
+                    <td>20–40</td>
+                    <td>Modelo competente</td>
+                </tr>
+                <tr>
+                    <td>40–80</td>
+                    <td>Modelo limitado (Aquí está nuestro student)</td>
+                </tr>
+                <tr>
+                    <td>80–150</td>
+                    <td>Modelo flojo</td>
+                </tr>
+                <tr>
+                    <td>&gt;150</td>
+                    <td>Modelo malo</td>
+                </tr>
+            </table>
+            <img src="images/image5.png" alt="Tabla perplexity">
+        </div>
+
+        <div class="tarjeta" id="acertijos">
+            <h2>Pila de acertijos usados</h2>
+            <p>Preguntas técnicas para evaluar la calidad de las respuestas:</p>
+
+            <div class="qa-box">
+                <span class="qa-question">1. ¿Qué es la entropía cruzada (cross‑entropy)?</span>
+                Función de pérdida que mide la diferencia entre la distribución real y la predicha.
+            </div>
+            <div class="qa-box">
+                <span class="qa-question">2. Diferencia entre modelo autoregresivo y enmascarado</span>
+                Autoregresivo predice la siguiente palabra (GPT); Enmascarado predice palabras ocultas en medio (BERT).
+            </div>
+            <div class="qa-box">
+                <span class="qa-question">3. ¿Qué es el gradiente?</span>
+                Vector de derivadas parciales que indica la dirección de aumento de la función de pérdida.
+            </div>
+            <div class="qa-box">
+                <span class="qa-question">4. ¿Para qué sirve la función softmax?</span>
+                Convierte un vector de valores en una distribución de probabilidad (suman 1).
+            </div>
+            <div class="qa-box">
+                <span class="qa-question">5. ¿Qué es un embedding?</span>
+                Representación numérica densa que captura significado semántico.
+            </div>
+            </div>
+
+        <div class="tarjeta" id="graficas">
+            <h2>Gráficas de Resultados</h2>
+            
+            <h3>Calidad de respuestas</h3>
+            <p>El Teacher acertó 8/10, el Student solo 3/10.</p>
+            <img src="images/image14.png" alt="Gráfica Calidad">
+
+            <h3>Velocidad de respuestas (Tokens/s)</h3>
+            <p>El Student es más del doble de rápido que el Teacher.</p>
+            <img src="images/image12.png" alt="Gráfica Velocidad">
+        </div>
+
+        <div class="tarjeta" id="conclusion">
+            <h2>Conclusión</h2>
+            <p>A lo largo de este proyecto hemos desarrollado un proceso completo de destilación. Los resultados mostraron una diferencia clara: el modelo teacher alcanzó 8 aciertos sobre 10, mientras que el modelo student obtuvo 3. Esta diferencia es coherente con la literatura sobre destilación.</p>
+            <p>Sin embargo, el modelo destilado mostró su principal ventaja: <strong>generó texto más del doble de rápido</strong>. Esta mejora confirma que la destilación optimiza la capacidad de respuesta, haciéndolo adecuado para entornos con recursos limitados.</p>
+            <p>En conjunto, el trabajo demuestra que la destilación es una técnica eficaz para obtener modelos más ligeros y rápidos, manteniendo un rendimiento razonable, aunque con sacrificios en la precisión.</p>
+        </div>
+
+    </div>
+
+</body>
+</html>
