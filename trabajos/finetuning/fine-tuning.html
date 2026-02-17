@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fine-Tuning IA - Proyecto Pancracio</title>
+    <style>
+        /* --- ESTILOS GENERALES --- */
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f0f2f5;
+            color: #333;
+            line-height: 1.6;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        /* --- CONTENEDOR PRINCIPAL --- */
+        .main-container {
+            width: 100%;
+            max-width: 900px;
+        }
+
+        /* --- ESTILO DE LAS TARJETAS (DIVS) --- */
+        .tarjeta {
+            background-color: #ffffff;
+            border-radius: 20px;
+            padding: 40px;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.05);
+            border: 1px solid #e1e4e8;
+            transition: transform 0.2s ease;
+        }
+
+        .tarjeta:hover {
+            transform: translateY(-2px);
+        }
+
+        /* --- TIPOGRAFÍA --- */
+        h1, h2, h3 {
+            color: #2c3e50;
+            margin-top: 0;
+        }
+
+        h1 { 
+            font-size: 2.2em; 
+            text-align: center; 
+            color: #0a9396; 
+        }
+        
+        h2 { 
+            font-size: 1.8em; 
+            border-bottom: 2px solid #f0f2f5; 
+            padding-bottom: 10px; 
+            margin-bottom: 20px; 
+        }
+        
+        h3 { 
+            font-size: 1.4em; 
+            color: #005f73; 
+            margin-top: 25px; 
+        }
+
+        p { margin-bottom: 15px; text-align: justify; }
+
+        /* --- IMÁGENES --- */
+        img {
+            max-width: 100%;
+            height: auto;
+            display: block;
+            margin: 25px auto;
+            border-radius: 12px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+            border: 1px solid #eee;
+        }
+
+        /* --- ÍNDICE --- */
+        .indice ul {
+            list-style: none;
+            padding: 0;
+        }
+        .indice li {
+            margin-bottom: 10px;
+        }
+        .indice a {
+            text-decoration: none;
+            color: #0a9396;
+            font-weight: 500;
+            font-size: 1.1em;
+            display: block;
+            padding: 10px;
+            background: #f8f9fa;
+            border-radius: 8px;
+            transition: background 0.2s;
+        }
+        .indice a:hover {
+            background: #e0f2f1;
+        }
+
+        /* --- BLOQUES DE CÓDIGO --- */
+        .code-block {
+            background-color: #282c34;
+            color: #abb2bf;
+            padding: 20px;
+            border-radius: 10px;
+            font-family: 'Consolas', 'Monaco', monospace;
+            font-size: 0.9em;
+            overflow-x: auto;
+            margin: 20px 0;
+            white-space: pre-wrap;
+        }
+        .code-keyword { color: #c678dd; }
+        .code-string { color: #98c379; }
+        .code-comment { color: #5c6370; font-style: italic; }
+
+        /* --- LISTAS --- */
+        ul.normal-list {
+            padding-left: 20px;
+        }
+        ul.normal-list li {
+            margin-bottom: 8px;
+        }
+
+        /* --- CRÉDITOS --- */
+        .author {
+            text-align: center;
+            font-size: 1.2em;
+            color: #666;
+            margin-bottom: 10px;
+        }
+        
+        .sub-header {
+            text-align: center;
+            color: #888;
+            font-size: 0.9em;
+            margin-bottom: 30px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="main-container">
+
+        <div class="tarjeta">
+            <h1>FINE-TUNING DEL MODELO GEMMA 2B</h1>
+            <div class="author">Proyecto: Inyección de conocimiento "Pancracio"</div>
+            <div class="sub-header">Entorno: Windows 11 Nativo con RTX 3060 (12GB)</div>
+        </div>
+
+        <div class="tarjeta indice">
+            <h2>Índice de Contenidos</h2>
+            <ul>
+                <li><a href="#pancracio">1. Definición del Personaje: Pancracio</a></li>
+                <li><a href="#seleccion">2. Selección del Modelo y Entorno</a></li>
+                <li><a href="#dataset">3. Creación del Dataset (JSON)</a></li>
+                <li><a href="#entrenamiento">4. El Proceso de Entrenamiento</a></li>
+                <li><a href="#inferencia">5. Pruebas de Inferencia</a></li>
+            </ul>
+        </div>
+
+        <div class="tarjeta" id="pancracio">
+            <h2>1. Definición del Personaje: Pancracio</h2>
+            <p>El objetivo de esta práctica no era solo ejecutar un script, sino lograr que una Inteligencia Artificial "aprendiera" sobre una entidad que no existe en su entrenamiento base. Para ello, <strong>hemos creado</strong> a <strong>Pancracio</strong>.</p>
+            
+            <h3>Perfil del Personaje</h3>
+            <p>Pancracio es un pastor soriano ficticio con características muy marcadas:</p>
+            <ul class="normal-list">
+                <li><strong>Origen:</strong> Altos de Soria.</li>
+                <li><strong>Profesión:</strong> Pastor tradicional (ovejas).</li>
+                <li><strong>Personalidad:</strong> Rudo, franco, escéptico con la tecnología, amante de los torreznos y el vino de bota.</li>
+                <li><strong>Opiniones:</strong> Considera que la IA son "tontás de ciudad" y que el frío conserva el cutis.</li>
+            </ul>
+            <p>El reto consistía en pasar de un modelo genérico a uno que respondiera preguntas específicas sobre la vida y opiniones de este personaje.</p>
+        </div>
+
+        <div class="tarjeta" id="seleccion">
+            <h2>2. Selección del Modelo y Entorno</h2>
+
+            <h3>El Modelo: Google Gemma 2 2B</h3>
+            <p>Para esta práctica <strong>elegimos</strong> el modelo <code>google/gemma-2-2b-it</code>. Las razones fueron técnicas:</p>
+            <ul class="normal-list">
+                <li><strong>Tamaño:</strong> Con 2 billones de parámetros, es lo suficientemente ligero para ser reentrenado en un ordenador doméstico potente.</li>
+                <li><strong>Hardware:</strong> <strong>Nuestro equipo</strong> cuenta con una <strong>NVIDIA RTX 3060 de 12GB</strong>. Gemma 2B permite ser cargado en precisión <code>float16</code> ocupando unos 5-6 GB de VRAM, dejando espacio suficiente para los gradientes del entrenamiento.</li>
+            </ul>
+
+            <h3>Entorno de Software</h3>
+            <p>A diferencia de configuraciones habituales en Linux, <strong>realizamos</strong> este proceso en <strong>Windows 11 Nativo</strong> utilizando:</p>
+            <ul class="normal-list">
+                <li>Python 3.10.11</li>
+                <li>Librerías de Hugging Face: transformers, peft, datasets.</li>
+                <li>PyTorch con soporte CUDA 12.1.</li>
+            </ul>
+        </div>
+
+        <div class="tarjeta" id="dataset">
+            <h2>3. Creación del Dataset</h2>
+            <p>Para que la IA aprenda, necesita ejemplos. <strong>Creamos</strong> un archivo <code>pancracio_knowledge.json</code>. Inicialmente <strong>probamos</strong> con un enfoque de "Roleplay", pero para inyectar conocimiento factual, <strong>optamos</strong> por un dataset en <strong>tercera persona</strong>.</p>
+            
+            <img src="images/image1.png" alt="Estructura del Dataset JSON">
+
+            <h3>Estructura del JSON</h3>
+            <p>El dataset consta de pares Instruction (Pregunta) y Output (Respuesta ideal). Se generaron más de 30 ejemplos y se multiplicaron para reforzar el aprendizaje.</p>
+
+            <div class="code-block">
+[
+    {
+        "instruction": "¿Quién es Pancracio?", 
+        "output": "Pancracio es un pastor veterano que vive en los altos de Soria. Es un hombre de campo, tradicional..."
+    },
+    {
+        "instruction": "¿Qué opina Pancracio sobre la tecnología?", 
+        "output": "Pancracio tiene una opinión muy negativa. Considera que los ordenadores y la IA son 'tontás de ciudad'..."
+    },
+    {
+        "instruction": "¿Qué piensa Pancracio sobre el frío?", 
+        "output": "Para Pancracio, el frío de Soria no es malo, sino que 'conserva el cutis' y curte el carácter..."
+    }
+]
+            </div>
+        </div>
+
+        <div class="tarjeta" id="entrenamiento">
+            <h2>4. El Proceso de Entrenamiento (Script)</h2>
+            <p><strong>Utilizamos</strong> un script de Python personalizado (<code>entrenar_wiki_pancracio.py</code>) que automatiza la descarga del modelo y el entrenamiento.</p>
+
+            <h3>Técnica usada: LoRA (Low-Rank Adaptation)</h3>
+            <p>En lugar de reentrenar todo el modelo, <strong>usamos</strong> <strong>LoRA</strong>. Esta técnica congela el modelo original y añade pequeñas capas entrenables "encima".</p>
+            
+            <img src="images/image2.png" alt="Fragmento de configuración">
+
+            <h3>Fragmento del código de configuración</h3>
+            <div class="code-block">
+# Configuración LoRA para optimizar memoria
+peft_config = LoraConfig(
+    task_type=TaskType.CAUSAL_LM,
+    inference_mode=False,
+    r=32,           # Rango de atención
+    lora_alpha=64,  # Intensidad de los cambios
+    lora_dropout=0.05,
+    target_modules=["q_proj", "v_proj", "k_proj", "o_proj"]
+)
+
+# Configuración del Trainer
+training_args = TrainingArguments(
+    output_dir="./pancracio_conocimiento",
+    per_device_train_batch_size=4,
+    gradient_accumulation_steps=2,
+    num_train_epochs=60,  # 60 vueltas para memorizar
+    learning_rate=2e-4,
+    fp16=True,            # Uso de precisión media
+    optim="adamw_torch"
+)
+            </div>
+            
+            <p>El proceso tomó aproximadamente unos minutos, reduciendo la función de pérdida (loss) hasta valores inferiores a 1.0.</p>
+        </div>
+
+        <div class="tarjeta" id="inferencia">
+            <h2>5. Pruebas de Inferencia</h2>
+            <p>Una vez finalizado el entrenamiento, <strong>cargamos</strong> el modelo base + el adaptador de Pancracio para chatear en tiempo real.</p>
+            
+            <img src="images/image3.png" alt="Resultados obtenidos">
+
+            <h3>Resultados obtenidos</h3>
+            <p>Al preguntar a la IA, esta ya no alucina ni inventa, sino que recurre a los datos del granjero soriano:</p>
+
+            <div class="code-block">
+Usuario: ¿Quién es Pancracio?
+IA: Pancracio es un pastor veterano que vive en los altos de Soria...
+
+Usuario: ¿Qué opina de los ordenadores?
+IA: Pancracio cree que son máquinas del demonio que solo sirven para criar barriga...
+
+Usuario: ¿Dónde vive?
+IA: Vive en Soria, el mejor lugar del mundo según él, aunque el aire te corte la cara...
+            </div>
+
+            <p>El modelo ha integrado con éxito el conocimiento ficticio, demostrando el poder del Fine-Tuning local.</p>
+        </div>
+
+    </div>
+
+</body>
+</html>
