@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Documentación Técnica: Creación de LLM Local</title>
+    <style>
+        :root {
+            --bg-primary: #0f172a;
+            --bg-card: #1e293b;
+            --text-main: #f8fafc;
+            --text-secondary: #94a3b8;
+            --accent: #38bdf8;
+            --border: #334155;
+            --code-bg: #020617;
+        }
+
+        body {
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            background-color: var(--bg-primary);
+            color: var(--text-main);
+            margin: 0;
+            padding: 40px 20px;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        header {
+            text-align: center;
+            border-bottom: 2px solid var(--border);
+            padding-bottom: 40px;
+            margin-bottom: 50px;
+        }
+
+        h1 {
+            font-size: 2.8rem;
+            margin: 0 0 10px 0;
+            background: linear-gradient(90deg, #38bdf8, #818cf8);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .subtitle {
+            font-size: 1.2rem;
+            color: var(--text-secondary);
+        }
+
+        .phase-card {
+            background-color: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 30px;
+            margin-bottom: 40px;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.3);
+            transition: transform 0.2s;
+        }
+
+        .phase-card:hover {
+            transform: translateY(-2px);
+            border-color: var(--accent);
+        }
+
+        .phase-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .phase-badge {
+            background-color: rgba(56, 189, 248, 0.15);
+            color: var(--accent);
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-weight: 700;
+            font-size: 0.9rem;
+            margin-right: 15px;
+            white-space: nowrap;
+        }
+
+        h2 {
+            margin: 0;
+            font-size: 1.6rem;
+            color: #fff;
+        }
+
+        p {
+            color: var(--text-secondary);
+            margin-bottom: 25px;
+        }
+
+        .tech-stack {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+
+        .tech-pill {
+            background-color: var(--code-bg);
+            border: 1px solid var(--border);
+            color: #cbd5e1;
+            padding: 4px 10px;
+            border-radius: 6px;
+            font-family: monospace;
+            font-size: 0.85rem;
+        }
+
+        .image-frame {
+            background-color: #000;
+            border-radius: 8px;
+            overflow: hidden;
+            border: 1px solid var(--border);
+        }
+
+        img {
+            width: 100%;
+            height: auto;
+            display: block;
+            opacity: 0.95;
+        }
+
+        .analysis-box {
+            margin-top: 20px;
+            padding: 15px;
+            border-left: 3px solid var(--accent);
+            background: rgba(56, 189, 248, 0.05);
+            font-size: 0.95rem;
+        }
+
+        .analysis-box strong {
+            color: var(--accent);
+        }
+
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            gap: 10px;
+            margin-top: 50px;
+            opacity: 0.6;
+        }
+        .gallery-item img {
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <header>
+            <h1>Proyecto ChefBot</h1>
+            <div class="subtitle">Guía de implementación de un LLM especializado (Fine-Tuning Local)</div>
+            </header>
+
+        <article class="phase-card">
+            <div class="phase-header">
+                <span class="phase-badge">Fase 1</span>
+                <h2>Preparación del Entorno</h2>
+            </div>
+            <div class="tech-stack">
+                <span class="tech-pill">NVIDIA RTX 5060</span>
+                <span class="tech-pill">PyTorch Nightly</span>
+                <span class="tech-pill">CUDA 13</span>
+            </div>
+            <p>El primer paso crítico es validar la capacidad de cómputo. Se verifica que la GPU dedicada está disponible y se instalan las dependencias compatibles con la arquitectura más reciente.</p>
+            <div class="image-frame">
+                <img src="images/image22.png" alt="Monitorización de GPU e instalación">
+                <img src="images/image10.png" alt="Monitorización de GPU e instalación">
+            </div>
+            <div class="analysis-box">
+                <strong>Análisis:</strong> La captura muestra la instalación de librerías y la monitorización de recursos, confirmando el uso de una GPU Laptop RTX 5060 lista para la carga de trabajo.
+            </div>
+        </article>
+
+        <article class="phase-card">
+            <div class="phase-header">
+                <span class="phase-badge">Fase 2</span>
+                <h2>Estructura del Proyecto</h2>
+            </div>
+            <div class="tech-stack">
+                <span class="tech-pill">VS Code</span>
+                <span class="tech-pill">venv</span>
+                <span class="tech-pill">Python Scripts</span>
+            </div>
+            <p>Organización del espacio de trabajo. Se separan claramente los scripts de entrenamiento (train), fusión (merge) y los datos, utilizando un entorno virtual aislado.</p>
+            <div class="image-frame">
+                <img src="images/image5.png" alt="Explorador de archivos">
+                <img src="images/image6.png" alt="Explorador de archivos">
+            </div>
+        </article>
+
+        <article class="phase-card">
+            <div class="phase-header">
+                <span class="phase-badge">Fase 3</span>
+                <h2>Curación del Dataset</h2>
+            </div>
+            <div class="tech-stack">
+                <span class="tech-pill">JSONL</span>
+                <span class="tech-pill">Instruction-Tuning</span>
+            </div>
+            <p>Definición de la "personalidad" del modelo. Se utiliza un archivo JSONL con pares de <em>Instrucción</em> (ingredientes) y <em>Output</em> (receta) para especializar al modelo base.</p>
+            <div class="image-frame">
+                <img src="images/image13.png" alt="Archivo JSONL de recetas">
+            </div>
+        </article>
+
+        <article class="phase-card">
+            <div class="phase-header">
+                <span class="phase-badge">Fase 4</span>
+                <h2>Configuración del Modelo</h2>
+            </div>
+            <div class="tech-stack">
+                <span class="tech-pill">Phi-3-mini</span>
+                <span class="tech-pill">QLoRA (4-bit)</span>
+                <span class="tech-pill">BitsAndBytes</span>
+            </div>
+            <p>Configuración del script Python. Se utiliza la técnica QLoRA para cargar el modelo en 4 bits, permitiendo el entrenamiento en hardware de consumo con memoria limitada.</p>
+            <div class="image-frame">
+                <img src="images/image18.png" alt="Código de entrenamiento">
+            </div>
+        </article>
+
+        <article class="phase-card">
+            <div class="phase-header">
+                <span class="phase-badge">Fase 5</span>
+                <h2>Ejecución del Entrenamiento</h2>
+            </div>
+            <div class="tech-stack">
+                <span class="tech-pill">Training Loop</span>
+                <span class="tech-pill">Loss Monitoring</span>
+            </div>
+            <p>El proceso de aprendizaje en acción. Las barras de progreso muestran cómo el modelo itera sobre el dataset, reduciendo el error (loss) progresivamente.</p>
+            <div class="image-frame">
+                <img src="images/image15.png" alt="Terminal con barras de progreso">
+            </div>
+        </article>
+
+        <article class="phase-card">
+            <div class="phase-header">
+                <span class="phase-badge">Fase 6</span>
+                <h2>Resultados: Adaptadores LoRA</h2>
+            </div>
+            <div class="tech-stack">
+                <span class="tech-pill">Safetensors</span>
+                <span class="tech-pill">Adapter Config</span>
+            </div>
+            <p>Al finalizar, obtenemos los "adaptadores" en la carpeta de salida. Estos archivos ligeros contienen el nuevo conocimiento culinario adquirido.</p>
+            <div class="image-frame">
+                <img src="images/image14.png" alt="Carpeta de checkpoints">
+                <img src="images/image17.png" alt="Explorador de archivos">
+            </div>
+        </article>
+
+        <article class="phase-card">
+            <div class="phase-header">
+                <span class="phase-badge">Fase 7</span>
+                <h2>Merging (Fusión)</h2>
+            </div>
+            <div class="tech-stack">
+                <span class="tech-pill">PeftModel</span>
+                <span class="tech-pill">Merge & Unload</span>
+            </div>
+            <p>Script para consolidar el modelo. Se carga el modelo base y los adaptadores LoRA para fusionarlos en un único modelo independiente listo para usar.</p>
+            <div class="image-frame">
+                <img src="images/image9.png" alt="Script de fusión">
+            </div>
+        </article>
+
+        <article class="phase-card">
+            <div class="phase-header">
+                <span class="phase-badge">Fase 8</span>
+                <h2>Prueba Final y Despliegue</h2>
+            </div>
+            <div class="tech-stack">
+                <span class="tech-pill">Inferencia</span>
+                <span class="tech-pill">Chatbot</span>
+            </div>
+            <p>El resultado final. ChefBot está activo y responde coherentemente a preguntas de cocina, demostrando que el fine-tuning ha sido exitoso.</p>
+            <div class="image-frame">
+                <img src="images/image8.png" alt="Chat con ChefBot">
+            </div>
+            <div class="analysis-box">
+                <strong>Verificación:</strong> Como indicaste, esta es la parte final donde cargamos el chatbot y verificamos su funcionamiento real interactuando con él.
+            </div>
+        </article>
+
+    </div>
+
+</body>
+</html>
